@@ -394,6 +394,7 @@ const getAttacked = () => {
 		}
 		
 		if (characterOne.hitPoints <= 0) {
+				document.getElementById("enemySprite").src = "./goblinSpriteWin.jpg";
 				document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints;
 				document.getElementById("characterSheet").innerHTML = characterOne.name + " RIP";
 				document.getElementById("attackLog2").innerHTML = `Oh no!  You have died!`;
