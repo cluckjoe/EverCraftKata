@@ -75,8 +75,8 @@ top: 191px
   font-weight:700;
   cursor: pointer;
   position:relative;
-   top: 0px;
-   left: -580px;
+   top: -180px;
+   left: -700px;
 }
 
 .testButton {
@@ -110,8 +110,8 @@ top: 191px
   font-weight:700;
   cursor: pointer;
   position:relative;
-   top: 0px;
-   left: -580px;
+  top: -262px;
+  left: -500px;
 }
 
 .enemySprite {
