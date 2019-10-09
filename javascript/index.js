@@ -74,7 +74,8 @@ let characterOne = {
 	constitution: 10,
 	wisdom: 10,
 	intelligence: 10,
-	charisma: 10
+	charisma: 10,
+	experience: 0
 }
 
 let randomBadGuy = {
@@ -428,7 +429,7 @@ const attackPlayer = () => {
 						damageResult = `${damageDealt} dmg (it's a crit!)`;
 					}
 					if (randomBadGuy.hitPoints <= 0) {
-						document.getElementById("enemySprite").src = "./goblinSpriteDead.jpg";
+						setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteDead.jpg"}, 810)
 						document.getElementById("hitPointsBoxEnemy").innerHTML = randomBadGuy.hitPoints;
 						document.getElementById("enemyHeader").innerHTML = randomBadGuy.name + " RIP";
 						document.getElementById("attackLog").innerHTML = ` You rolled a ${rollResult[1]}. and hit for ${damageResult} ${randomBadGuy.name} is dead! You are victorious!`;
