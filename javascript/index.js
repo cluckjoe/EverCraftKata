@@ -272,7 +272,7 @@ const enterSkillButton = (skill) => {
 		break;
 		case 'constitution':
 		characterOne.constitution = parseInt(skillEntry,10) ;
-		characterOne.hitPoints =  + abilityModifier(characterOne.constitution);
+		characterOne.hitPoints = 5 + abilityModifier(characterOne.constitution);
 		document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints; 
 		break;
 		case 'wisdom':
@@ -354,6 +354,9 @@ const generateEnemySprite = () => {
 }	
 
 const enemySpriteAttack = () => {
+	const delay = 200;
+	setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteStab.jpg"
+	setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteStand.jpg"}, delay)}, delay);
 }
 	
 const rollDie = () => {
@@ -375,23 +378,18 @@ let damageDealt1 = 0;
 const getAttacked = () => {
 	let damageResult1 = '';
 	const innerRollResult = rollDamageDie(randomBadGuy);
-    console.log(`step 1: roll result = ${innerRollResult[0]}`);
 	if (innerRollResult[0] >= characterOne.armorClass) {
+		enemySpriteAttack();
 		characterOne.hitPoints = characterOne.hitPoints -1-abilityModifier(randomBadGuy.strength);
-		console.log(`step 2: roll result was greater than my armor class and I took damage`);
 		if (innerRollResult[1] === 20) {
 			console.log(`step 2: roll result was a 20, i take double damage`);
 			characterOne.hitPoints = characterOne.hitPoints -1-abilityModifier(randomBadGuy.strength);
 			let damageDealt1 = 2*(1+abilityModifier(randomBadGuy.strength))
-			console.log('this is below damagedealt being defined');
-			console.log(damageDealt1);	
 			damageResult1 = `${damageDealt1} dmg`;
 		}
 		else {
 			console.log(`step 2: i took regular damage`);
 			let damageDealt1 = 1+abilityModifier(randomBadGuy.strength);
-			console.log(damageDealt1);	
-			console.log('this is below damagedealt being defined');	
 			damageResult1 = `${damageDealt1} dmg`;			
 		}
 		
@@ -407,7 +405,7 @@ const getAttacked = () => {
 		}
 	}	
 	else {document.getElementById("attackLog2").innerHTML = `${randomBadGuy.name} rolled a ${innerRollResult[1]} and missed!`;
-		console.log('no damage dealt');
+	enemySpriteAttack();
 	}
 }
 
@@ -425,8 +423,10 @@ const attackPlayer = () => {
 			let damageResult = `${damageDealt} dmg`;
 			if (rollResult[1]=== 20) {
 				randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength);
-			damageResult = '2 dmg (it\'s a crit!)';}
+				damageDealt = 2*(1+abilityModifier(characterOne.strength));
+			damageResult = `${damageDealt} dmg (it's a crit!)`;}
 			if (randomBadGuy.hitPoints <= 0) {
+				document.getElementById("enemySprite").src = "./goblinSpriteDead.jpg";
 				document.getElementById("hitPointsBoxEnemy").innerHTML = randomBadGuy.hitPoints;
 				document.getElementById("enemyHeader").innerHTML = randomBadGuy.name + " RIP";
 				document.getElementById("attackLog").innerHTML = ` You rolled a ${rollResult[1]}. and hit for ${damageResult} ${randomBadGuy.name} is dead! You are victorious!`;
