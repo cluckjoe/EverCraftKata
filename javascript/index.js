@@ -411,7 +411,7 @@ const getAttacked = () => {
 	}
 }
 
-/*
+
 const attackPlayer = () => {
 	if (characterOne.hitPoints != 0) {
 	if(randomBadGuy.name != ''){
@@ -452,7 +452,7 @@ else if (characterOne.name != 'name'&& characterOne.name != '') {document.getEle
 else {document.getElementById("attackLog").innerHTML = `You don't even exist yet!`}
 	}
 }
-*/
+
 
 //END OF COMBAT RELATED FUNCTIONS
 
