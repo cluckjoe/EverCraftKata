@@ -175,9 +175,9 @@ let buttonDeletion = {
 }
 
 const deleteTheButtons = () => {
-	console.log('button deletion has been requested')
+	
 	if (buttonDeletion.name === 'done' && buttonDeletion.alignment === 'done' && buttonDeletion.strength === 'done' && buttonDeletion.dexterity === 'done' && buttonDeletion.constitution === 'done' && buttonDeletion.wisdom === 'done' && buttonDeletion.intelligence === 'done' && buttonDeletion.charisma === 'done') {
-		console.log('BUTTONS BEING REMOVED');
+		
 		$( ".button" ).remove();
 		$( ".buttonAlignment" ).remove();
 		
@@ -192,10 +192,7 @@ const deleteTheButtons = () => {
 		document.getElementById("theTable").deleteRow(6);
 		
 	}
-	else {
-		console.log('it was determined not to delete the buttons yet, here are the current settings:');
-		console.log(buttonDeletion);
-	}
+
 }
 
 
@@ -385,13 +382,13 @@ const getAttacked = () => {
 		enemySpriteAttack();
 		characterOne.hitPoints = characterOne.hitPoints -1-abilityModifier(randomBadGuy.strength);
 		if (innerRollResult[1] === 20) {
-			console.log(`step 2: roll result was a 20, i take double damage`);
+			
 			characterOne.hitPoints = characterOne.hitPoints -1-abilityModifier(randomBadGuy.strength);
 			let damageDealt1 = 2*(1+abilityModifier(randomBadGuy.strength))
 			damageResult1 = `${damageDealt1} dmg`;
 		}
 		else {
-			console.log(`step 2: i took regular damage`);
+			
 			let damageDealt1 = 1+abilityModifier(randomBadGuy.strength);
 			damageResult1 = `${damageDealt1} dmg`;			
 		}
