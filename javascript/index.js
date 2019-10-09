@@ -354,9 +354,12 @@ const generateEnemySprite = () => {
 }	
 
 const enemySpriteAttack = () => {
-	const delay = 200;
-	setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteStab.jpg"
-	setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteStand.jpg"}, delay)}, delay);
+	
+		
+		const delay = 200;
+		setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteStab.jpg"
+		setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteStand.jpg"}, delay)}, delay);
+	
 }
 	
 const rollDie = () => {
@@ -394,7 +397,7 @@ const getAttacked = () => {
 		}
 		
 		if (characterOne.hitPoints <= 0) {
-				document.getElementById("enemySprite").src = "./goblinSpriteWin.jpg";
+				
 				document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints;
 				document.getElementById("characterSheet").innerHTML = characterOne.name + " RIP";
 				document.getElementById("attackLog2").innerHTML = `Oh no!  You have died!`;
@@ -412,45 +415,47 @@ const getAttacked = () => {
 
 
 const attackPlayer = () => {
-	if (characterOne.hitPoints != 0) {
-	if(randomBadGuy.name != ''){
-		if (randomBadGuy.hitPoints <= 0) {
-			document.getElementById("attackLog").innerHTML = `They are already dead! Have some mercy!`;}
-		else {	
-		const rollResult = rollDamageDie(characterOne);
-		if (rollResult[0] >= randomBadGuy.armorClass) {
-			randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength);
-			let damageDealt = 1+abilityModifier(characterOne.strength);
-			let damageResult = `${damageDealt} dmg`;
-			if (rollResult[1]=== 20) {
-				randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength);
-				damageDealt = 2*(1+abilityModifier(characterOne.strength));
-			damageResult = `${damageDealt} dmg (it's a crit!)`;}
+	if (characterOne.hitPoints > 0) {
+		if(randomBadGuy.name != ''){
 			if (randomBadGuy.hitPoints <= 0) {
-				document.getElementById("enemySprite").src = "./goblinSpriteDead.jpg";
-				document.getElementById("hitPointsBoxEnemy").innerHTML = randomBadGuy.hitPoints;
-				document.getElementById("enemyHeader").innerHTML = randomBadGuy.name + " RIP";
-				document.getElementById("attackLog").innerHTML = ` You rolled a ${rollResult[1]}. and hit for ${damageResult} ${randomBadGuy.name} is dead! You are victorious!`;
-				document.getElementById("attackLog2").innerHTML = ``}
-			else {
-				document.getElementById("hitPointsBoxEnemy").innerHTML = randomBadGuy.hitPoints;
-				document.getElementById("attackLog").innerHTML = `You rolled a ${rollResult[1]}.  Your attack was successful! You hit for ${damageResult} and Enemy's HP is now ${randomBadGuy.hitPoints}!`;
-				getAttacked();
-				}
+				document.getElementById("attackLog").innerHTML = `They are already dead! Have some mercy!`;}
+			else {	
+				const rollResult = rollDamageDie(characterOne);
+				if (rollResult[0] >= randomBadGuy.armorClass) {
+					randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength);
+					let damageDealt = 1+abilityModifier(characterOne.strength);
+					let damageResult = `${damageDealt} dmg`;
+					if (rollResult[1]=== 20) {
+						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength);
+						damageDealt = 2*(1+abilityModifier(characterOne.strength));
+						damageResult = `${damageDealt} dmg (it's a crit!)`;
+					}
+					if (randomBadGuy.hitPoints <= 0) {
+						document.getElementById("enemySprite").src = "./goblinSpriteDead.jpg";
+						document.getElementById("hitPointsBoxEnemy").innerHTML = randomBadGuy.hitPoints;
+						document.getElementById("enemyHeader").innerHTML = randomBadGuy.name + " RIP";
+						document.getElementById("attackLog").innerHTML = ` You rolled a ${rollResult[1]}. and hit for ${damageResult} ${randomBadGuy.name} is dead! You are victorious!`;
+						document.getElementById("attackLog2").innerHTML = ``
+					}
+					else {
+						document.getElementById("hitPointsBoxEnemy").innerHTML = randomBadGuy.hitPoints;
+						document.getElementById("attackLog").innerHTML = `You rolled a ${rollResult[1]}.  Your attack was successful! You hit for ${damageResult} and Enemy's HP is now ${randomBadGuy.hitPoints}!`;
+						getAttacked();
+						}
 				}
 	
 	else {document.getElementById("attackLog").innerHTML = `You rolled a ${rollResult[1]}.  Your attack failed!`;
+	}
 	getAttacked();
-	
+	if (characterOne.hitPoints <= 0) {
+		setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteWin.jpg"}, 810)
 	}
-
+				}
+		}
 	}
+	else if (characterOne.name != 'name'&& characterOne.name != '') {document.getElementById("attackLog").innerHTML = `You do not yet have an enemy!`;
 	}
-	
-	
-else if (characterOne.name != 'name'&& characterOne.name != '') {document.getElementById("attackLog").innerHTML = `You do not yet have an enemy!`;
-}
-else {document.getElementById("attackLog").innerHTML = `You don't even exist yet!`}
+	else {document.getElementById("attackLog").innerHTML = `You don't even exist yet!`
 	}
 }
 
