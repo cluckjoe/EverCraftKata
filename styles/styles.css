@@ -1,0 +1,167 @@
+body {
+  text-align: center;
+  background-color: #f0e8c5;
+}
+
+div {
+  margin-top: 15px;
+}
+
+
+.nameText {
+justify-content: left;}
+.alignmentText {
+justify-content: left;}
+
+.image-section {
+  display: flex;
+  justify-content: center;
+}
+
+.section-style {
+  margin-right: 25px;
+  margin-left: 25px;
+  background-color: white;
+}
+
+.button {
+	 
+    
+	width: 84px;
+    height: 65px;   
+  background-color: #4CAF50;
+  border: black;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  font-size: 14px;
+  font-weight:700;
+  cursor: pointer;
+    /*position:relative;
+    transition: .5s ease;
+    top: 191px;
+    left: 10px;*/
+    
+    
+ 
+}
+
+h2.characterSheet {
+	position:relative;
+	left: -570px;
+}
+
+h2.enemyHeader {
+	position:relative;
+	left: -570px;
+}
+
+.theTableEnemy {
+position:relative
+top: 191px
+}
+
+
+.buttonBadGuy {
+	 
+    	width: 84px;
+    height: 65px;   
+  background-color: #4CAF50;
+  border: black;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  font-size: 14px;
+  font-weight:700;
+  cursor: pointer;
+  position:relative;
+   top: 0px;
+   left: -580px;
+}
+
+.testButton {
+	 
+    	width: 84px;
+    height: 65px;   
+  background-color: #00FFFF;
+  border: black;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  font-size: 14px;
+  font-weight:700;
+  cursor: pointer;
+  position:relative;
+   top: 0px;
+   left: 0px;
+}
+
+.buttonAttack {
+	 
+    
+	width: 84px;
+    height: 65px;   
+  background-color: #4CAF50;
+  border: black;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  font-size: 14px;
+  font-weight:700;
+  cursor: pointer;
+  position:relative;
+   top: 0px;
+   left: -580px;
+}
+
+.enemySprite {
+	 
+    
+	width: 120px;
+    height: 120px;   
+    position:relative;
+    top: -150px;
+    left: 250px;
+}
+
+.attackLog {
+	position:relative;
+	top: 0px;
+	left: -400px;
+}
+.attackLog2 {
+	position:relative;
+	top: 0px;
+	left: -400px;
+}
+.buttonAlignment {
+	 
+   
+	width: 84px;
+    height: 55px;   
+  background-color: #4CAF50;
+  border: black;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  font-size: 14px;
+  font-weight:700;
+  cursor: pointer;
+     /*position:relative;
+    transition: .5s ease;
+    top: 110px;
+    left: -570px;*/
+    
+   
+ 
+}
+
+.button:hover {
+  background-color: green;
+}
+.buttonAlignment:hover {
+  background-color: green;
+}
+.buttonBadGuy:hover {
+  background-color: green;
+}

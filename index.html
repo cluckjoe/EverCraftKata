@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>EverCraft KATA</title>
+    <link rel="stylesheet" href="./styles/styles.css" />
+	<script async src="./javascript/jquery-3.4.1.js"></script>
+    <script async src="./javascript/index.js"></script>
+  </head>
+  <body>
+    <h1>EverCraft KATA</h1>
+    <h4 id='date'></h4>
+
+<!--<div id="button">
+	 <button class="button" onclick="nameEntry()">Enter Your Name</button> 
+</div>	 -->
+
+
+<div id ="nameText">
+<p id ="nameTextInsert"></p>
+</div>
+
+<div id ="alignmentText">
+<p id ="alignmentTextInsert"></p>
+</div>
+
+
+
+<h2 class ="characterSheet" id = "characterSheet"></h2>
+<table style="width:30%" id="theTable">
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+  <tr>
+    <th>Alignment</th>
+    <th>Armor Class</th> 
+    <th>Hit Points</th>
+  </tr>
+  <tr>
+    <td id = "alignmentBox"></td>
+    <td id = "armorClassBox">10</td>
+    <td id = "hitPointsBox">5</td>
+  </tr>
+  <tr id = "buttonRow">
+    <td id = "alignmentBoxButton"><button class="buttonAlignment" onclick="enterAlignment()">Set Alignment</button> </td>
+    <td id = "armorClassBoxButton"><button class="button" onclick="nameEntry()">Enter Your Name</button> </td>
+    <td id = "hitPointsBoxButton"> </td>
+  </tr>
+  <tr>
+    <th>Strength</th>
+    <th>Dexterity</th> 
+    <th>Constitution</th>
+  </tr>
+  <tr>
+    <td id = "strengthBox">10</td>
+    <td id = "dexterityBox">10</td>
+    <td id = "constitutionBox">10</td>
+  </tr>
+  <tr id = "buttonRow1">
+    <td id = "strengthBoxButton"><button class="buttonStrength" onclick="enterSkillButton('Strength')">Set Strength</button> </td>
+    <td id = "dexterityBoxButton"><button class="buttonDexterity" onclick="enterSkillButton('Dexterity')">Set Dexterity</button> </td>
+    <td id = "constitutionBoxButton"><button class="buttonConstitution" onclick="enterSkillButton('Constitution')">Set Constitution</button> </td>
+  </tr>
+    <tr>
+    <th>Charisma</th>
+    <th>Intelligence</th> 
+    <th>Wisdom</th>
+  </tr>
+   <tr>
+    <td id = "charismaBox">10</td>
+    <td id = "intelligenceBox">10</td>
+    <td id = "wisdomBox">10</td>
+  </tr>
+   <tr id = "buttonRow2">
+    <td id = "charismaBoxButton"><button class="buttonCharisma" onclick="enterSkillButton('Charisma')">Set Charisma</button> </td>
+    <td id = "IntelligenceBoxButton"><button class="buttonIntelligence" onclick="enterSkillButton('Intelligence')">Set Intelligence</button> </td>
+    <td id = "WisdomBoxButton"><button class="buttonWisdom" onclick="enterSkillButton('Wisdom')">Set Wisdom</button> </td>
+  </tr>
+</table>
+
+<img id = "enemySprite" class = "enemySprite" src="./blankWhiteBackground.jpg"  width="120"
+         height="120">
+
+<h2 class ="enemyHeader" id="enemyHeader" >Enemy</h2>
+<table style="width:30%" id="theTableEnemy">
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+  <tr>
+    <th>Alignment</th>
+    <th>Armor Class</th> 
+    <th>Hit Points</th>
+  </tr>
+  <tr>
+    <td id = "alignmentBoxEnemy"></td>
+    <td id = "armorClassBoxEnemy"></td>
+    <td id = "hitPointsBoxEnemy"></td>
+  </tr>
+</table>
+
+
+	 <button class="buttonBadGuy" onclick="createRandomBadGuy()">Generate Enemy</button>  
+	<!-- <button class="testButton" onclick="testFunction()">test</button>  -->
+	 
+<div id="buttonAttack">
+	 <button class="buttonAttack" onclick="attackPlayer()">Attack</button>  
+	 </div>
+	 
+	<p id = "attackLog" class = "attackLog"></p>
+	<p id = "attackLog2" class = "attackLog2"></p>
+  </body>
+</html>
