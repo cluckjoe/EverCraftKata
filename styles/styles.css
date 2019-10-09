@@ -76,7 +76,7 @@ top: 191px
   cursor: pointer;
   position:relative;
    top: -180px;
-   left: -700px;
+   left: 350px;
 }
 
 .testButton {
@@ -110,8 +110,8 @@ top: 191px
   font-weight:700;
   cursor: pointer;
   position:relative;
-  top: -262px;
-  left: -500px;
+  top: -260px;
+  left: 150px;
 }
 
 .enemySprite {
@@ -126,13 +126,13 @@ top: 191px
 
 .attackLog {
 	position:relative;
-	top: 0px;
-	left: -400px;
+	top: -225px;
+	left: 250px;
 }
 .attackLog2 {
 	position:relative;
-	top: 0px;
-	left: -400px;
+	top: -225px;
+	left: 250px;
 }
 .buttonAlignment {
 	 
