@@ -75,7 +75,9 @@ let characterOne = {
 	wisdom: 10,
 	intelligence: 10,
 	charisma: 10,
-	experience: 0
+	experience: 0,
+	level: 1,
+	levelAttackRollModifier: 0
 }
 
 let randomBadGuy = {
@@ -163,7 +165,7 @@ const abilityModifier = (character) => {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-//CHARACTER CREATION
+//CHARACTER CREATION AND MODIFICATION
 let buttonDeletion = {
 	name: '',
 	alignment: '',
@@ -319,6 +321,28 @@ const enterSkillButton = (skill) => {
 	}
 }
 	
+const levelUp = () => {
+	for (i=1000; i<=20000; i=i+1000) {
+		if(characterOne.experience >= i && characterOne.experience < (i+1000)) {
+			characterOne.level = ((i/1000)+1);
+			console.log(`your character level is ${characterOne.level} and i = ${i}`);
+			document.getElementById("levelCell").innerHTML = characterOne.level;
+			characterOne.hitPoints = characterOne.hitPoints + abilityModifier(characterOne.constitution) + 1;
+			document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints; 
+			if ((characterOne.level)%2 === 0) {
+				characterOne.levelAttackRollModifier = characterOne.levelAttackRollModifier + 1;
+			}
+			console.log('CONGRATS YOU LEVELED UP');
+			console.log(`Your level is now ${characterOne.level} your hitpoints are now ${characterOne.hitPoints} and your bonus to attack roll is now ${characterOne.levelAttackRollModifier}`)
+			re;
+		}
+	}
+	
+}
+
+
+
+
 
 //END OF CHARACTER CREATION		
 
@@ -419,7 +443,13 @@ const attackPlayer = () => {
 				document.getElementById("attackLog").innerHTML = `They are already dead! Have some mercy!`;}
 			else {	
 				const rollResult = rollDamageDie(characterOne);
+				rollResult[0] = rollResult[0] + characterOne.levelAttackRollModifier;
+				console.log(rollResult);
+				console.log(abilityModifier(characterOne.strength));
+				console.log(characterOne.levelAttackRollModifier);
 				if (rollResult[0] >= randomBadGuy.armorClass) {
+					characterOne.experience = characterOne.experience + 10;
+					document.getElementById("experienceCell").innerHTML = characterOne.experience;
 					randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength);
 					let damageDealt = 1+abilityModifier(characterOne.strength);
 					let damageResult = `${damageDealt} dmg`;
@@ -434,11 +464,13 @@ const attackPlayer = () => {
 						document.getElementById("enemyHeader").innerHTML = randomBadGuy.name + " RIP";
 						document.getElementById("attackLog").innerHTML = ` You rolled a ${rollResult[1]}. and hit for ${damageResult} ${randomBadGuy.name} is dead! You are victorious!`;
 						document.getElementById("attackLog2").innerHTML = ``
+						levelUp();
 					}
 					else {
 						document.getElementById("hitPointsBoxEnemy").innerHTML = randomBadGuy.hitPoints;
 						document.getElementById("attackLog").innerHTML = `You rolled a ${rollResult[1]}.  Your attack was successful! You hit for ${damageResult} and Enemy's HP is now ${randomBadGuy.hitPoints}!`;
 						getAttacked();
+						levelUp();
 						}
 				}
 	
@@ -450,8 +482,9 @@ const attackPlayer = () => {
 	}
 				}
 		}
-	}
-	else if (characterOne.name != 'name'&& characterOne.name != '') {document.getElementById("attackLog").innerHTML = `You do not yet have an enemy!`;
+		else if (characterOne.name != 'name'&& characterOne.name != '') {document.getElementById("attackLog").innerHTML = `You do not yet have an enemy!`;
+		}
+	
 	}
 	else {document.getElementById("attackLog").innerHTML = `You don't even exist yet!`
 	}
