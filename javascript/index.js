@@ -77,7 +77,8 @@ let characterOne = {
 	charisma: 10,
 	experience: 0,
 	level: 1,
-	levelAttackRollModifier: 0
+	levelAttackRollModifier: 0,
+	characterClass: ''
 }
 
 let randomBadGuy = {
@@ -174,25 +175,27 @@ let buttonDeletion = {
 	constitution: '',
 	wisdom: '',
 	intelligence: '',
-	charisma: ''
+	charisma: '',
+	characterClass: ''
 }
 
 const deleteTheButtons = () => {
 	
-	if (buttonDeletion.name === 'done' && buttonDeletion.alignment === 'done' && buttonDeletion.strength === 'done' && buttonDeletion.dexterity === 'done' && buttonDeletion.constitution === 'done' && buttonDeletion.wisdom === 'done' && buttonDeletion.intelligence === 'done' && buttonDeletion.charisma === 'done') {
+	if (buttonDeletion.name === 'done' && buttonDeletion.alignment === 'done' && buttonDeletion.strength === 'done' && buttonDeletion.dexterity === 'done' && buttonDeletion.constitution === 'done' && buttonDeletion.wisdom === 'done' && buttonDeletion.intelligence === 'done' && buttonDeletion.charisma === 'done' && buttonDeletion.characterClass === 'done') {
 		
 		$( ".button" ).remove();
 		$( ".buttonAlignment" ).remove();
-		
 		$( '.buttonStrength').remove();
 		$( '.buttonDexterity').remove();
 		$( '.buttonCharisma').remove();
 		$( '.buttonConstitution').remove();
 		$( '.buttonWisdom').remove();
 		$( '.buttonIntelligence').remove();
+		$( '.buttonClass').remove();
 		document.getElementById("theTable").deleteRow(2);
 		document.getElementById("theTable").deleteRow(4);
 		document.getElementById("theTable").deleteRow(6);
+		document.getElementById("theTable").deleteRow(8);
 		
 	}
 
@@ -217,13 +220,32 @@ const enterAlignment = () => {
 	let alignmentLower = alignment.toLowerCase();
 	switch(alignmentLower) {
 		case "good": 
-			characterOne.alignment = "Good"; 
+			if (characterOne.characterClass === 'rogue') {
+				characterOne.alignment = '';
+				alert('You cannot have the alignment of "good" as a rogue');
+			}
+			else {
+				characterOne.alignment = "Good"; 
+			}
 			break;
 		case "neutral":
+			if (characterOne.characterClass === 'paladin') {
+				alert('Paladins must be good aligned')
+				characterOne.alignment = '';
+			}
+			else {
 			characterOne.alignment = "Neutral"; 
+			}
 			break;
 		case "evil":
+		if (characterOne.characterClass === 'paladin') {
+				alert('Paladins must be good aligned')
+				characterOne.alignment = '';
+			}
+			else {
 			characterOne.alignment = "Evil"; 
+			}
+			
 			break;
 		default:
 			characterOne.alignment = "Invalid Alignment, please re-enter a valid option";
@@ -231,7 +253,7 @@ const enterAlignment = () => {
 			}
 	
 	document.getElementById("alignmentBox").innerHTML = characterOne.alignment;
-	if (characterOne.alignment != "Invalid Alignment, please re-enter a valid option") {
+	if (characterOne.alignment != "Invalid Alignment, please re-enter a valid option" && characterOne.alignment != '') {
 		buttonDeletion.alignment = 'done';
 		deleteTheButtons()
 	}
@@ -267,7 +289,12 @@ const enterSkillButton = (skill) => {
 		break;
 		case 'dexterity':
 		characterOne.dexterity = parseInt(skillEntry,10) ;
+		if (characterOne.characterClass === 'monk') {
+			characterOne.armorClass = 10 + abilityModifier(characterOne.dexterity) + abilityModifier(characterOne.wisdom);
+		}
+		else {
 		characterOne.armorClass = 10 + abilityModifier(characterOne.dexterity);
+		}
 		document.getElementById("armorClassBox").innerHTML = characterOne.armorClass 
 		break;
 		case 'constitution':
@@ -277,6 +304,10 @@ const enterSkillButton = (skill) => {
 		break;
 		case 'wisdom':
 		characterOne.wisdom = parseInt(skillEntry,10) ;
+		if (characterOne.characterClass === 'monk') {
+			characterOne.armorClass = 10 + abilityModifier(characterOne.dexterity) + abilityModifier(characterOne.wisdom);
+			document.getElementById("armorClassBox").innerHTML = characterOne.armorClass 
+		}
 		break;
 		case 'intelligence':
 		characterOne.intelligence = parseInt(skillEntry,10) ;
@@ -329,7 +360,27 @@ const levelUp = () => {
 			document.getElementById("levelCell").innerHTML = characterOne.level;
 			characterOne.hitPoints = characterOne.hitPoints + abilityModifier(characterOne.constitution) + 5;
 			document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints; 
-			if ((characterOne.level)%2 === 0) {
+			if (characterOne.characterClass === 'fighter') {
+				characterOne.levelAttackRollModifier = characterOne.levelAttackRollModifier + 1
+				characterOne.hitPoints = characterOne.hitPoints + abilityModifier(characterOne.constitution) + 5;
+				document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints; 
+				console.log(`I AM A FIGHTER SO I GET MORE ATTACK AND MORE HP`);
+			}
+			else if (characterOne.characterClass === 'monk') {
+				if ((characterOne.level)%2 === 0 || (characterOne.level)%3 === 0) {
+					characterOne.levelAttackRollModifier = characterOne.levelAttackRollModifier + 1;
+				}
+				characterOne.hitPoints = characterOne.hitPoints + abilityModifier(characterOne.constitution) + 1;
+				document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints; 
+				console.log(`I AM A MONK SO I GET MORE HP`);
+			}
+			else if (characterone.characterClass === 'paladin') {
+				characterOne.hitPoints = characterOne.hitPoints + abilityModifier(characterOne.constitution) + 3;
+				document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints; 
+				characterOne.levelAttackRollModifier = characterOne.levelAttackRollModifier + 1
+			}
+			
+			else if ((characterOne.level)%2 === 0) {
 				characterOne.levelAttackRollModifier = characterOne.levelAttackRollModifier + 1;
 			}
 			console.log('CONGRATS YOU LEVELED UP');
@@ -341,7 +392,55 @@ const levelUp = () => {
 }
 
 
+const enterClass = () => {
 
+	let characterClass = prompt("Enter your class (rogue, monk, paladin, or fighter):  ");
+	let characterClassLower = characterClass.toLowerCase();
+	switch(characterClassLower) {
+		case "rogue": 
+			if (characterOne.alignment === 'good') {
+				alert('you cannot play as a rogue if your alignment is good');
+				characterOne.characterClass = '';
+			}
+			else {
+				characterOne.characterClass = 'rogue';
+			}
+			break;
+		case "fighter":
+			characterOne.characterClass = "fighter"; 
+			break;
+		case "paladin":
+			characterOne.characterClass = "paladin"; 
+			if (characterOne.alignment === 'evil' || characterOne.alignment === 'neutral') {
+				alert('Paladins can only have a good alignment')
+				characterOne.characterClass = '';
+			}
+			else {
+				characterOne.characterClass = 'paladin';
+			}
+			break;
+		case "monk":
+			characterOne.characterClass = 'monk';
+			break;
+		default:
+			characterOne.characterClass = "Invalid Alignment, please re-enter a valid option";
+			break;
+			}
+	
+	document.getElementById("characterClassBox").innerHTML = characterOne.characterClass;
+	if (characterOne.characterClass === 'monk') {
+			characterOne.armorClass = 10 + abilityModifier(characterOne.dexterity) + abilityModifier(characterOne.wisdom);
+			document.getElementById("armorClassBox").innerHTML = characterOne.armorClass 
+		}
+	else {
+		characterOne.armorClass = 10 + abilityModifier(characterOne.dexterity);
+		document.getElementById("armorClassBox").innerHTML = characterOne.armorClass 
+	}
+	if (characterOne.characterClass != "Invalid Alignment, please re-enter a valid option" && characterOne.aligntment != '') {
+		buttonDeletion.characterClass = 'done';
+		deleteTheButtons()
+	}
+	}
 
 
 //END OF CHARACTER CREATION		
@@ -437,23 +536,68 @@ const getAttacked = () => {
 
 
 const attackPlayer = () => {
+	let damageDealt = 0;
+	if (abilityModifier(randomBadGuy.dexterity)>=0) {
+		let enemyDexModIfPositive = abilityModifier(randomBadGuy.dexterity);
+	}
+	else {
+		let enemyDexModIfPositive = 0;
+	}
 if (characterOne.name != 'name'&& characterOne.name != '') {
 	if (characterOne.hitPoints > 0) {
 		if(randomBadGuy.name != ''){
 			if (randomBadGuy.hitPoints <= 0) {
+				
 				document.getElementById("attackLog").innerHTML = `They are already dead! Have some mercy!`;}
 			else {	
 				const rollResult = rollDamageDie(characterOne);
 				rollResult[0] = rollResult[0] + characterOne.levelAttackRollModifier;
-				if (rollResult[0] >= randomBadGuy.armorClass) {
+				if (characterOne.characterClass === 'paladin' && randomBadGuy.alignment === 'evil') {
+					rollResult[0] = rollResult[0] + 2;
+				}
+				if (rollResult[0] >= randomBadGuy.armorClass || ((characterOne.characterClass === 'rogue')&&(rollResult[0] >= (randomBadGuy.armorClass - enemyDexModIfPositive)))) {
+					console.log('initiate successful attack');
+					console.log(characterOne.characterClass);
 					characterOne.experience = characterOne.experience + 10;
 					document.getElementById("experienceCell").innerHTML = characterOne.experience;
-					randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength);
-					let damageDealt = 1+abilityModifier(characterOne.strength);
+					if (characterOne.characterClass === 'rogue') {
+						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.dexterity);
+						damageDealt = 1+abilityModifier(characterOne.dexterity);
+						console.log(`As a rogue I used dexterity mod to my attack which was ${characterOne.dexterity}`);
+					}
+					else if (characterOne.characterClass === 'monk') {
+						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 3 - abilityModifier(characterOne.strength);
+						damageDealt = 3+abilityModifier(characterOne.strength);
+						console.log(`As a monk I hit 3 default damage`);
+					}
+					else if (characterOne.characterClass === 'paladin' && randomBadGuy.alignment === 'Evil') {
+						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength) - 2;
+						damageDealt = 1+abilityModifier(characterOne.strength)+2;
+						console.log(damageDealt);
+					}
+					else {
+						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength);
+						damageDealt = 1+abilityModifier(characterOne.strength);
+					}
 					let damageResult = `${damageDealt} dmg`;
 					if (rollResult[1]=== 20) {
-						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength);
-						damageDealt = 2*(1+abilityModifier(characterOne.strength));
+						if (characterOne.characterClass === 'monk') {
+							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 3 - abilityModifier(characterOne.strength);
+							damageDealt = 2*(3+abilityModifier(characterOne.strength));
+						}
+						else if (characterOne.characterClass === 'paladin') {
+							randomBadGuy.hitPoints = randomBadGuy.hitPoints - (2*(1 + abilityModifier(characterOne.strength) + 2));
+							damageDealt = 3*(1+abilityModifier(characterOne.strength)+2);
+						}	
+						else {
+							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength);
+							damageDealt = 2*(1+abilityModifier(characterOne.strength));
+							if (characterOne.characterClass === 'rogue') {
+								randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.dexterity);
+							damageDealt = 3*(1+abilityModifier(characterOne.dexterity));
+							console.log('ROGUE CRITICAL');
+							}
+						}
 						damageResult = `${damageDealt} dmg (it's a crit!)`;
 					}
 					if (randomBadGuy.hitPoints <= 0) {
@@ -473,6 +617,7 @@ if (characterOne.name != 'name'&& characterOne.name != '') {
 				}
 	
 	else {document.getElementById("attackLog").innerHTML = `You rolled a ${rollResult[1]}.  Your attack failed!`;
+	console.log('i have missed');
 	}
 	getAttacked();
 	if (characterOne.hitPoints <= 0) {
@@ -535,7 +680,7 @@ const enterAlignmentTest = () => {
 
 const enterSkillButtonTest = (skill) => {
 	let skillLower = skill.toLowerCase()
-	let testSkillEntry = '10';
+	let testSkillEntry = '20';
 	let skillEntry = testSkillEntry;
 	switch (skillLower) {
 		case 'strength':
@@ -614,4 +759,4 @@ const testFunction = () => {
 	}
 
 }
-*/		
+*/
