@@ -455,10 +455,23 @@ const createRandomBadGuy = () => {
 	randomBadGuy.name = arrayOfNames[arrayPosition];
 	randomBadGuy.armorClass = Math.floor(Math.random()*18 + 1);
 	randomBadGuy.hitPoints = Math.floor(Math.random()*9 + 1);
+	const randomAlignment = Math.floor(Math.random()*3);
+	switch (randomAlignment) {
+		case 0:
+		randomBadGuy.alignment = 'Good';
+		break;
+		case 1:
+		randomBadGuy.alignment = 'Evil';
+		break;
+		case 2:
+		randomBadGuy.alignment = 'Neutral';
+		break;
+	}
 	document.getElementById("alignmentBoxEnemy").innerHTML = randomBadGuy.alignment;
 	document.getElementById("armorClassBoxEnemy").innerHTML = randomBadGuy.armorClass;
 	document.getElementById("hitPointsBoxEnemy").innerHTML = randomBadGuy.hitPoints;
 	document.getElementById("enemyHeader").innerHTML = randomBadGuy.name;
+	document.getElementById("alignmentBoxEnemy").innerHTML = randomBadGuy.alignment;
 	generateEnemySprite();
 
 }
