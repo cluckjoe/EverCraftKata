@@ -240,7 +240,7 @@ const enterAlignment = () => {
 	
 //used for all ability modifiers
 const checkValidEntry = (ability) => {
-	for (i = 0; i <= 20; i++) {
+	for (i = 1; i <= 20; i++) {
 		
 		let check = i.toString();
 		if (check === ability) {
@@ -288,13 +288,13 @@ const enterSkillButton = (skill) => {
 	};
 	let checkValidSkill = checkValidEntry(skillEntry);
 	if (checkValidSkill === false) {
-		document.getElementById(skill + 'Box').innerHTML = 'input must be 0 -> 20';
+		document.getElementById(skillLower + 'Box').innerHTML = 'input must be 1 -> 20';
 	}		
 	else {
 		document.getElementById(skillLower + 'Box').innerHTML = skillEntry;}
 	
 	
-	if (document.getElementById(skillLower + 'Box').innerHTML != 'input must be 0 -> 20') {
+	if (document.getElementById(skillLower + 'Box').innerHTML != 'input must be 1 -&gt; 20') {
 	
 		switch (skillLower) {
 			case 'strength':
@@ -323,7 +323,7 @@ const enterSkillButton = (skill) => {
 	
 const levelUp = () => {
 	for (i=1000; i<=20000; i=i+1000) {
-		if(characterOne.experience >= i && characterOne.experience < (i+1000)) {
+		if(characterOne.experience >= i && characterOne.experience < (i+1000) && ((characterOne.level * 1000)-1000) != i) {
 			characterOne.level = ((i/1000)+1);
 			console.log(`your character level is ${characterOne.level} and i = ${i}`);
 			document.getElementById("levelCell").innerHTML = characterOne.level;
@@ -334,7 +334,7 @@ const levelUp = () => {
 			}
 			console.log('CONGRATS YOU LEVELED UP');
 			console.log(`Your level is now ${characterOne.level} your hitpoints are now ${characterOne.hitPoints} and your bonus to attack roll is now ${characterOne.levelAttackRollModifier}`)
-			re;
+			
 		}
 	}
 	
@@ -437,6 +437,7 @@ const getAttacked = () => {
 
 
 const attackPlayer = () => {
+if (characterOne.name != 'name'&& characterOne.name != '') {
 	if (characterOne.hitPoints > 0) {
 		if(randomBadGuy.name != ''){
 			if (randomBadGuy.hitPoints <= 0) {
@@ -444,9 +445,6 @@ const attackPlayer = () => {
 			else {	
 				const rollResult = rollDamageDie(characterOne);
 				rollResult[0] = rollResult[0] + characterOne.levelAttackRollModifier;
-				console.log(rollResult);
-				console.log(abilityModifier(characterOne.strength));
-				console.log(characterOne.levelAttackRollModifier);
 				if (rollResult[0] >= randomBadGuy.armorClass) {
 					characterOne.experience = characterOne.experience + 10;
 					document.getElementById("experienceCell").innerHTML = characterOne.experience;
@@ -482,13 +480,15 @@ const attackPlayer = () => {
 	}
 				}
 		}
-		else if (characterOne.name != 'name'&& characterOne.name != '') {document.getElementById("attackLog").innerHTML = `You do not yet have an enemy!`;
+		else {document.getElementById("attackLog").innerHTML = `You do not yet have an enemy!`;
 		}
 	
 	}
-	else {document.getElementById("attackLog").innerHTML = `You don't even exist yet!`
+	
 	}
+	else {document.getElementById("attackLog").innerHTML = `You don't even exist yet!`}
 }
+
 
 
 //END OF COMBAT RELATED FUNCTIONS
@@ -496,23 +496,20 @@ const attackPlayer = () => {
 //TEST FUNCTIONS BELOW
 /*
 const nameEntryTest = () => {
-	characterOne.name = "BillyTesting"
+	characterOne.name = 'Billy';
 	document.getElementById("characterSheet").innerHTML = characterOne.name;
-	if (characterOne.name != 'name'&& characterOne.name != '' && characterOne.alignment != "Invalid Alignment, please re-enter a valid option" && characterOne.alignment != '') {
-
-				$( ".button" ).remove();
-				$( ".buttonAlignment" ).remove();
-				document.getElementById("theTable").deleteRow(2);
-    }
-	characterOne.armorClass = characterOne.armorClass + abilityModifier(characterOne.dexterity);
-	document.getElementById("armorClassBox").innerHTML = characterOne.armorClass 
+	if (characterOne.name != 'name'&& characterOne.name != '') {
+		buttonDeletion.name = 'done';
+		deleteTheButtons()
+	}
+	
 	document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints;
+	
 }
-
 
 const enterAlignmentTest = () => {
 
-	let alignment = "good";
+	let alignment = 'good';
 	let alignmentLower = alignment.toLowerCase();
 	switch(alignmentLower) {
 		case "good": 
@@ -530,12 +527,76 @@ const enterAlignmentTest = () => {
 			}
 	
 	document.getElementById("alignmentBox").innerHTML = characterOne.alignment;
-	if (characterOne.alignment != "Invalid Alignment, please re-enter a valid option" && characterOne.name != 'name' && characterOne.name != '') {
-	$( ".buttonAlignment" ).remove();
-	document.getElementById("theTable").deleteRow(2);
+	if (characterOne.alignment != "Invalid Alignment, please re-enter a valid option") {
+		buttonDeletion.alignment = 'done';
+		deleteTheButtons()
 	}
 	}
 
+const enterSkillButtonTest = (skill) => {
+	let skillLower = skill.toLowerCase()
+	let testSkillEntry = '10';
+	let skillEntry = testSkillEntry;
+	switch (skillLower) {
+		case 'strength':
+		characterOne.strength = parseInt(skillEntry,10) ;
+		break;
+		case 'dexterity':
+		characterOne.dexterity = parseInt(skillEntry,10) ;
+		characterOne.armorClass = 10 + abilityModifier(characterOne.dexterity);
+		document.getElementById("armorClassBox").innerHTML = characterOne.armorClass 
+		break;
+		case 'constitution':
+		characterOne.constitution = parseInt(skillEntry,10) ;
+		characterOne.hitPoints = 5 + abilityModifier(characterOne.constitution);
+		document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints; 
+		break;
+		case 'wisdom':
+		characterOne.wisdom = parseInt(skillEntry,10) ;
+		break;
+		case 'intelligence':
+		characterOne.intelligence = parseInt(skillEntry,10) ;
+		break;
+		case 'charisma':
+		characterOne.charisma = parseInt(skillEntry,10) ;
+		break;
+	
+	};
+	let checkValidSkill = checkValidEntry(skillEntry);
+	if (checkValidSkill === false) {
+		document.getElementById(skillLower + 'Box').innerHTML = 'input must be 1 -> 20';
+	}		
+	else {
+		document.getElementById(skillLower + 'Box').innerHTML = skillEntry;}
+	
+	
+	if (document.getElementById(skillLower + 'Box').innerHTML != "input must be 1 -&gt; 20") {
+	
+		switch (skillLower) {
+			case 'strength':
+			buttonDeletion.strength = 'done';
+			break;
+			case 'dexterity':
+			buttonDeletion.dexterity = 'done';
+			break;
+			case 'constitution':
+			buttonDeletion.constitution = 'done';
+			break;
+			case 'wisdom':
+			buttonDeletion.wisdom = 'done';
+			break;
+			case 'intelligence':
+			buttonDeletion.intelligence = 'done';
+			break;
+			case 'charisma':
+			buttonDeletion.charisma = 'done';
+			break;
+		}
+		deleteTheButtons()
+		
+	}
+	
+}
 
 let testI = 0;
 const testFunction = () => {
@@ -543,8 +604,14 @@ const testFunction = () => {
 		testI++;
 	nameEntryTest();
 	enterAlignmentTest();
-	createRandomBadGuy();
+	enterSkillButtonTest('strength');
+	enterSkillButtonTest('dexterity');
+	enterSkillButtonTest('constitution');
+	enterSkillButtonTest('wisdom');
+	enterSkillButtonTest('intelligence');
+	enterSkillButtonTest('charisma');
+	
 	}
-	getAttacked()
+
 }
-	*/	
+*/		
