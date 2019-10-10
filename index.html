@@ -80,10 +80,17 @@ table, th, td {
   <tr>
     <th>Level</th>
     <th>Experience</th> 
+	<th>Class</th>
   </tr>
-   <tr id = "LevelRow">
+   <tr id = "LevelClassEntryRow">
     <td id = "levelCell">1</td>
 	<td id = "experienceCell">0</td>
+	<td id = "characterClassBox"></td>
+  </tr>
+  <tr id = "characterClassEntryRow">
+    <td></td>
+	<td></td>
+	<td id = "ClassBoxButton"><button class="buttonClass" onclick="enterClass()">Set Class</button> </td>
   </tr>
 </table>
 
@@ -111,7 +118,7 @@ table, th, td {
 
 
 	 <button class="buttonBadGuy" onclick="createRandomBadGuy()">Generate Enemy</button>  
-	 <!-- <button class="testButton" onclick="testFunction()">test</button>  -->
+	  <!-- <button class="testButton" onclick="testFunction()">test</button>  -->
 	 
 <div id="buttonAttack">
 	 <button class="buttonAttack" onclick="attackPlayer()">Attack</button>  
