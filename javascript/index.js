@@ -327,7 +327,7 @@ const levelUp = () => {
 			characterOne.level = ((i/1000)+1);
 			console.log(`your character level is ${characterOne.level} and i = ${i}`);
 			document.getElementById("levelCell").innerHTML = characterOne.level;
-			characterOne.hitPoints = characterOne.hitPoints + abilityModifier(characterOne.constitution) + 1;
+			characterOne.hitPoints = characterOne.hitPoints + abilityModifier(characterOne.constitution) + 5;
 			document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints; 
 			if ((characterOne.level)%2 === 0) {
 				characterOne.levelAttackRollModifier = characterOne.levelAttackRollModifier + 1;
