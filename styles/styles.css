@@ -8,10 +8,15 @@ div {
   margin-top: 15px;
 }
 
+.title {
+	font-family: Papyrus, Fantasy, Arial;
+
+}
 
 
-.nameText {
-justify-content: left;}
+
+
+
 .alignmentText {
 justify-content: left;}
 
@@ -49,11 +54,13 @@ justify-content: left;}
 }
 
 h2.characterSheet {
+	font-family:Papyrus,Fantasy,garamond,serif;
 	position:relative;
 	left: -570px;
 }
 
 h2.enemyHeader {
+	font-family:Papyrus,Fantasy,garamond,serif;
 	position:relative;
 	left: -570px;
 }
