@@ -558,21 +558,26 @@ const attackPlayer = () => {
 	}
 if (characterOne.name != 'name'&& characterOne.name != '') {
 	if (characterOne.hitPoints > 0) {
+		//checks that the bad guy exists at all
 		if(randomBadGuy.name != ''){
+			//confirms bad guy is alive before attempting an attack
 			if (randomBadGuy.hitPoints <= 0) {
-				
 				document.getElementById("attackLog").innerHTML = `They are already dead! Have some mercy!`;}
+				//after confirming they are alive proceed with rolling for attack
 			else {	
 				const rollResult = rollDamageDie(characterOne);
 				rollResult[0] = rollResult[0] + characterOne.levelAttackRollModifier;
-				if (characterOne.characterClass === 'paladin' && randomBadGuy.alignment === 'evil') {
+				//paladins have the ability to increase their roll if against an evil enemy
+				if (characterOne.characterClass === 'paladin' && randomBadGuy.alignment === 'Evil') {
 					rollResult[0] = rollResult[0] + 2;
 				}
+				//Begin section of effects for a successful hit
 				if (rollResult[0] >= randomBadGuy.armorClass || ((characterOne.characterClass === 'rogue')&&(rollResult[0] >= (randomBadGuy.armorClass - enemyDexModIfPositive)))) {
 					console.log('initiate successful attack');
 					console.log(characterOne.characterClass);
 					characterOne.experience = characterOne.experience + 10;
 					document.getElementById("experienceCell").innerHTML = characterOne.experience;
+					//various class unique abilities being taken into account
 					if (characterOne.characterClass === 'rogue') {
 						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.dexterity);
 						damageDealt = 1+abilityModifier(characterOne.dexterity);
@@ -588,12 +593,15 @@ if (characterOne.name != 'name'&& characterOne.name != '') {
 						damageDealt = 1+abilityModifier(characterOne.strength)+2;
 						console.log(damageDealt);
 					}
+					//if no class unique abilities are relevant proceed to the standard combat
 					else {
 						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength);
 						damageDealt = 1+abilityModifier(characterOne.strength);
 					}
 					let damageResult = `${damageDealt} dmg`;
+					//Critical roll section, this never replaces the above combat steps but instead adds to them.  i.e. no 2* damage, it allows for the damage above, then repeats same damage below
 					if (rollResult[1]=== 20) {
+						//class specific crit rules
 						if (characterOne.characterClass === 'monk') {
 							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 3 - abilityModifier(characterOne.strength);
 							damageDealt = 2*(3+abilityModifier(characterOne.strength));
@@ -613,6 +621,7 @@ if (characterOne.name != 'name'&& characterOne.name != '') {
 						}
 						damageResult = `${damageDealt} dmg (it's a crit!)`;
 					}
+					//The enemy has died
 					if (randomBadGuy.hitPoints <= 0) {
 						setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteDead.jpg"}, 810)
 						document.getElementById("hitPointsBoxEnemy").innerHTML = randomBadGuy.hitPoints;
@@ -628,16 +637,18 @@ if (characterOne.name != 'name'&& characterOne.name != '') {
 						levelUp();
 						}
 				}
-	
+				//End section of effects for a successful hit
 	else {document.getElementById("attackLog").innerHTML = `You rolled a ${rollResult[1]}.  Your attack failed!`;
 	console.log('i have missed');
 	}
+	//see getAttacked function for the bad guys turn to attack
 	getAttacked();
 	if (characterOne.hitPoints <= 0) {
 		setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteWin.jpg"}, 810)
 	}
 				}
 		}
+		//sections to accomodate an attempt to attack before character creation or enemy creation
 		else {document.getElementById("attackLog").innerHTML = `You do not yet have an enemy!`;
 		}
 	
@@ -646,6 +657,7 @@ if (characterOne.name != 'name'&& characterOne.name != '') {
 	}
 	else {document.getElementById("attackLog").innerHTML = `You don't even exist yet!`}
 }
+
 
 
 
