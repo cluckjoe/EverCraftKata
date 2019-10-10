@@ -411,7 +411,7 @@ const enterClass = () => {
 			break;
 		case "paladin":
 			characterOne.characterClass = "paladin"; 
-			if (characterOne.alignment === 'evil' || characterOne.alignment === 'neutral') {
+			if (characterOne.alignment === 'Evil' || characterOne.alignment === 'Neutral') {
 				alert('Paladins can only have a good alignment')
 				characterOne.characterClass = '';
 			}
@@ -436,7 +436,7 @@ const enterClass = () => {
 		characterOne.armorClass = 10 + abilityModifier(characterOne.dexterity);
 		document.getElementById("armorClassBox").innerHTML = characterOne.armorClass 
 	}
-	if (characterOne.characterClass != "Invalid Alignment, please re-enter a valid option" && characterOne.aligntment != '') {
+	if (characterOne.characterClass != "Invalid Alignment, please re-enter a valid option" && characterOne.characterClass != "") {
 		buttonDeletion.characterClass = 'done';
 		deleteTheButtons()
 	}
@@ -598,7 +598,7 @@ if (characterOne.name != 'name'&& characterOne.name != '') {
 							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 3 - abilityModifier(characterOne.strength);
 							damageDealt = 2*(3+abilityModifier(characterOne.strength));
 						}
-						else if (characterOne.characterClass === 'paladin') {
+						else if (characterOne.characterClass === 'paladin' && randomBadGuy.alignment === 'Evil') {
 							randomBadGuy.hitPoints = randomBadGuy.hitPoints - (2*(1 + abilityModifier(characterOne.strength) + 2));
 							damageDealt = 3*(1+abilityModifier(characterOne.strength)+2);
 						}	
