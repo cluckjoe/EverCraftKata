@@ -10,7 +10,19 @@ div {
 
 .title {
 	font-family: Papyrus, Fantasy, Arial;
-
+	position: relative;
+	top: 0;
+	left: 0;
+}
+.torch1 {
+	position: absolute;
+	top: 0;
+	left: 600px;
+}
+.torch2 {
+	position: absolute;
+	top: 0;
+	left: 980px;
 }
 
 
@@ -56,13 +68,13 @@ justify-content: left;}
 h2.characterSheet {
 	font-family:Papyrus,Fantasy,garamond,serif;
 	position:relative;
-	left: -570px;
+	left: -580px;
 }
 
 h2.enemyHeader {
 	font-family:Papyrus,Fantasy,garamond,serif;
 	position:relative;
-	left: -570px;
+	left: -580px;
 }
 
 .theTableEnemy {
