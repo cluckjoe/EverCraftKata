@@ -78,7 +78,8 @@ let characterOne = {
 	experience: 0,
 	level: 1,
 	levelAttackRollModifier: 0,
-	characterClass: ''
+	characterClass: '',
+	race: 'Human'
 }
 
 let randomBadGuy = {
@@ -95,69 +96,100 @@ let randomBadGuy = {
 };
 
 //Used whenever something requires the ability modifier of a characters skill
-const abilityModifier = (character) => {
+const abilityModifier = (character,characterString) => {
+	
+	returnValue = 0;
 	switch(character) {
 		case 1:
-		return -5;
+		returnValue = -5;
 		break;
 		case 2:
-		return -4;
+		returnValue = -4;
 		break;
 		case 3:
-		return -4;
+		returnValue = -4;
 		break;
 		case 4:
-		return -3;
+		returnValue = -3;
 		break;
 		case 5:
-		return -3;
+		returnValue = -3;
 		break;
 		case 6:
-		return -2;
+		returnValue = -2;
 		break;
 		case 7:
-		return -2;
+		returnValue = -2;
 		break;
 		case 8:
-		return -1;
+		returnValue = -1;
 		break;
 		case 9:
-		return -1;
+		returnValue = -1;
 		break;
 		case 10:
-		return 0;
+		returnValue = 0;
 		break;
 		case 11:
-		return 0;
+		returnValue = 0;
 		break;
 		case 12:
-		return 1;
+		returnValue = 1;
 		break;
 		case 13:
-		return 1;
+		returnValue = 1;
 		break;
 		case 14:
-		return 2;
+		returnValue = 2;
 		break;
 		case 15:
-		return 2;
+		returnValue = 2;
 		break;
 		case 16:
-		return 3;
+		returnValue = 3;
 		break;
 		case 17:
-		return 4;
+		returnValue = 4;
 		break;
 		case 18:
-		return 4;
+		returnValue = 4;
 		break;
 		case 19:
-		return 5;
+		returnValue = 5;
 		break;
 		case 20:
-		return 5;
+		returnValue = 5;
 		break;	
 }
+if (characterOne.race === 'Orc' && (characterString === 'characterOne.intelligence' ||characterString === 'characterOne.wisdom' || characterString === 'characterOne.charisma')) {
+		returnValue = returnValue - 1;
+	}
+else if (characterOne.race === 'Orc' && characterString === 'characterOne.strength') {
+		returnValue = returnValue + 2;
+	}
+else if (characterOne.race === 'Dwarf' && characterString === 'characterOne.charisma') {
+		returnValue = returnValue - 1;
+	}
+else if (characterOne.race === 'Dwarf' && characterString === 'characterOne.constitution') {
+		returnValue = returnValue + 1;
+	}
+else if (characterOne.race === 'Elf' && characterString === 'characterOne.dexterity') {
+		returnValue = returnValue + 1;
+	}
+else if (characterOne.race === 'Elf' && characterString === 'characterOne.constitution') {
+		returnValue = returnValue - 1;
+	}
+else if (characterOne.race === 'Halfling' && characterString === 'characterOne.dexterity') {
+		returnValue = returnValue + 1;
+	}
+else if (characterOne.race === 'Halfling' && characterString === 'characterOne.strength') {
+		returnValue = returnValue - 1;
+	}
+if (characterOne.race === 'Dwarf' && randomBadGuy.race === 'Orc' && characterString === 'characterOne.strength') {
+		returnValue = returnValue + 2;
+	}
+	
+return returnValue;
 }
 
 //END OF DEFAULT OBJECTS AND ARRAYS
@@ -176,12 +208,13 @@ let buttonDeletion = {
 	wisdom: '',
 	intelligence: '',
 	charisma: '',
-	characterClass: ''
+	characterClass: '',
+	race: ''
 }
 
 const deleteTheButtons = () => {
 	
-	if (buttonDeletion.name === 'done' && buttonDeletion.alignment === 'done' && buttonDeletion.strength === 'done' && buttonDeletion.dexterity === 'done' && buttonDeletion.constitution === 'done' && buttonDeletion.wisdom === 'done' && buttonDeletion.intelligence === 'done' && buttonDeletion.charisma === 'done' && buttonDeletion.characterClass === 'done') {
+	if (buttonDeletion.name === 'done' && buttonDeletion.alignment === 'done' && buttonDeletion.strength === 'done' && buttonDeletion.dexterity === 'done' && buttonDeletion.constitution === 'done' && buttonDeletion.wisdom === 'done' && buttonDeletion.intelligence === 'done' && buttonDeletion.charisma === 'done' && buttonDeletion.characterClass === 'done' && buttonDeletion.race === 'done') {
 		
 		$( ".button" ).remove();
 		$( ".buttonAlignment" ).remove();
@@ -192,10 +225,12 @@ const deleteTheButtons = () => {
 		$( '.buttonWisdom').remove();
 		$( '.buttonIntelligence').remove();
 		$( '.buttonClass').remove();
+		$( '.buttonRace').remove();
 		document.getElementById("theTable").deleteRow(2);
 		document.getElementById("theTable").deleteRow(4);
 		document.getElementById("theTable").deleteRow(6);
 		document.getElementById("theTable").deleteRow(8);
+		endSetTasks();
 		
 	}
 
@@ -204,7 +239,7 @@ const deleteTheButtons = () => {
 
 const nameEntry = () => {
 	characterOne.name = prompt("Enter your name: ", "name");
-	document.getElementById("characterSheet").innerHTML = characterOne.name;
+	document.getElementById("characterSheet").innerHTML = characterOne.name + ' the ' + characterOne.race;
 	if (characterOne.name != 'name'&& characterOne.name != '') {
 		buttonDeletion.name = 'done';
 		deleteTheButtons()
@@ -213,6 +248,67 @@ const nameEntry = () => {
 	document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints;
 	
 }
+
+const raceEntry = () => {
+		let characterRace = prompt("Enter your race (Human, Orc, Dwarf, Elf, or Halfling): ");
+		let characterRaceLower = characterRace.toLowerCase();
+		switch(characterRaceLower) {
+			case "human":
+			characterOne.race = "Human";
+			break;
+			case "orc":
+			characterOne.race = "Orc";
+			break;
+			case "dwarf":
+			characterOne.race = "Dwarf";
+			break;
+			case "elf":
+			characterOne.race = "Elf";
+			break;
+			case "halfling":
+			if (characterOne.alignment === 'Evil') {
+				alert('Halflings cannot be Evil aligned')
+			}
+			else {
+				characterOne.race = "Halfling";
+			}
+			break;
+			default:
+			alert('you must select a valid race option (Human, Orc, Dwarf, Elf, or Halfling)');
+			break;
+		}
+		
+		
+		
+		
+	document.getElementById("characterSheet").innerHTML = characterOne.name + ' the ' + characterOne.race;
+	if (characterOne.race !='') {
+		buttonDeletion.race = 'done';
+		deleteTheButtons()
+	}
+}
+
+const endSetTasks = () => {
+	if (characterOne.race === 'Orc') {
+		characterOne.armorClass = characterOne.armorClass + 2;
+		document.getElementById("armorClassBox").innerHTML = characterOne.armorClass;
+	}
+	if (characterOne.characterClass === 'fighter') {
+		characterOne.hitPoints = characterOne.hitPoints + 5;
+		document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints;
+	}
+	else if (characterOne.characterClass === 'monk') {
+		characterOne.hitPoints = characterOne.hitPoints + 1;
+		document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints;
+	}
+	else if (characterOne.characterClass === 'paladin') {
+		characterOne.hitPoints = characterOne.hitPoints + 3;
+		document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints;
+	}
+
+	
+}
+
 
 const enterAlignment = () => {
 
@@ -245,6 +341,12 @@ const enterAlignment = () => {
 			else {
 			characterOne.alignment = "Evil"; 
 			}
+		if (characterOne.race === 'Halfling') {
+			alert('Halflings cannot be Evil aligned')
+		}
+		else {
+			characterOne.alignment = "Evil"; 
+		}
 			
 			break;
 		default:
@@ -290,22 +392,22 @@ const enterSkillButton = (skill) => {
 		case 'dexterity':
 		characterOne.dexterity = parseInt(skillEntry,10) ;
 		if (characterOne.characterClass === 'monk') {
-			characterOne.armorClass = 10 + abilityModifier(characterOne.dexterity) + abilityModifier(characterOne.wisdom);
+			characterOne.armorClass = 10 + abilityModifier(characterOne.dexterity,'characterOne.dexterity') + abilityModifier(characterOne.wisdom, 'characterOne.wisdom');
 		}
 		else {
-		characterOne.armorClass = 10 + abilityModifier(characterOne.dexterity);
+		characterOne.armorClass = 10 + abilityModifier(characterOne.dexterity, 'characterOne.dexterity');
 		}
 		document.getElementById("armorClassBox").innerHTML = characterOne.armorClass 
 		break;
 		case 'constitution':
 		characterOne.constitution = parseInt(skillEntry,10) ;
-		characterOne.hitPoints = 5 + abilityModifier(characterOne.constitution);
+		characterOne.hitPoints = 5 + abilityModifier(characterOne.constitution, 'characterOne.constitution');
 		document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints; 
 		break;
 		case 'wisdom':
 		characterOne.wisdom = parseInt(skillEntry,10) ;
 		if (characterOne.characterClass === 'monk') {
-			characterOne.armorClass = 10 + abilityModifier(characterOne.dexterity) + abilityModifier(characterOne.wisdom);
+			characterOne.armorClass = 10 + abilityModifier(characterOne.dexterity,'characterOne.dexterity') + abilityModifier(characterOne.wisdom, 'characterOne.wisdom');
 			document.getElementById("armorClassBox").innerHTML = characterOne.armorClass 
 		}
 		break;
@@ -358,11 +460,11 @@ const levelUp = () => {
 			characterOne.level = ((i/1000)+1);
 			console.log(`your character level is ${characterOne.level} and i = ${i}`);
 			document.getElementById("levelCell").innerHTML = characterOne.level;
-			characterOne.hitPoints = characterOne.hitPoints + abilityModifier(characterOne.constitution) + 5;
+			characterOne.hitPoints = characterOne.hitPoints + abilityModifier(characterOne.constitution, 'characterOne.constitution') + 5;
 			document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints; 
 			if (characterOne.characterClass === 'fighter') {
 				characterOne.levelAttackRollModifier = characterOne.levelAttackRollModifier + 1
-				characterOne.hitPoints = characterOne.hitPoints + abilityModifier(characterOne.constitution) + 5;
+				characterOne.hitPoints = characterOne.hitPoints + 5;
 				document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints; 
 				console.log(`I AM A FIGHTER SO I GET MORE ATTACK AND MORE HP`);
 			}
@@ -370,18 +472,22 @@ const levelUp = () => {
 				if ((characterOne.level)%2 === 0 || (characterOne.level)%3 === 0) {
 					characterOne.levelAttackRollModifier = characterOne.levelAttackRollModifier + 1;
 				}
-				characterOne.hitPoints = characterOne.hitPoints + abilityModifier(characterOne.constitution) + 1;
+				characterOne.hitPoints = characterOne.hitPoints + 1;
 				document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints; 
 				console.log(`I AM A MONK SO I GET MORE HP`);
 			}
 			else if (characterone.characterClass === 'paladin') {
-				characterOne.hitPoints = characterOne.hitPoints + abilityModifier(characterOne.constitution) + 3;
+				characterOne.hitPoints = characterOne.hitPoints + 3;
 				document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints; 
 				characterOne.levelAttackRollModifier = characterOne.levelAttackRollModifier + 1
 			}
 			
 			else if ((characterOne.level)%2 === 0) {
 				characterOne.levelAttackRollModifier = characterOne.levelAttackRollModifier + 1;
+			}
+			if (characterOne.race === 'Dwarf' && (abilityModifier(characterOne.constitution,'characterOne.constitution') >=0)) {
+				characterOne.hitPoints = characterOne.hitPoints + abilityModifier(characterOne.constitution, 'characterOne.constitution');
+				document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints; 
 			}
 			console.log('CONGRATS YOU LEVELED UP');
 			console.log(`Your level is now ${characterOne.level} your hitpoints are now ${characterOne.hitPoints} and your bonus to attack roll is now ${characterOne.levelAttackRollModifier}`)
@@ -429,11 +535,11 @@ const enterClass = () => {
 	
 	document.getElementById("characterClassBox").innerHTML = characterOne.characterClass;
 	if (characterOne.characterClass === 'monk') {
-			characterOne.armorClass = 10 + abilityModifier(characterOne.dexterity) + abilityModifier(characterOne.wisdom);
+			characterOne.armorClass = 10 + abilityModifier(characterOne.dexterity, 'characterOne.dexterity') + abilityModifier(characterOne.wisdom, 'characterOne.wisdom');
 			document.getElementById("armorClassBox").innerHTML = characterOne.armorClass 
 		}
 	else {
-		characterOne.armorClass = 10 + abilityModifier(characterOne.dexterity);
+		characterOne.armorClass = 10 + abilityModifier(characterOne.dexterity, 'characterOne.dexterity');
 		document.getElementById("armorClassBox").innerHTML = characterOne.armorClass 
 	}
 	if (characterOne.characterClass != "Invalid Alignment, please re-enter a valid option" && characterOne.characterClass != "") {
@@ -456,6 +562,25 @@ const createRandomBadGuy = () => {
 	randomBadGuy.armorClass = Math.floor(Math.random()*18 + 1);
 	randomBadGuy.hitPoints = Math.floor(Math.random()*9 + 1);
 	const randomAlignment = Math.floor(Math.random()*3);
+	const randomRace = Math.floor(Math.random()*5);
+	switch(randomRace) {
+		case 0:
+		randomBadGuy.race = 'Human';
+		break;
+		case 1:
+		randomBadGuy.race = 'Orc';
+		break;
+		case 2:
+		randomBadGuy.race = 'Dwarf';
+		break;
+		case 3:
+		randomBadGuy.race = 'Elf';
+		break;
+		case 4:
+		randomBadGuy.race = 'Halfling';
+		break;
+		
+	}
 	switch (randomAlignment) {
 		case 0:
 		randomBadGuy.alignment = 'Good';
@@ -470,7 +595,7 @@ const createRandomBadGuy = () => {
 	document.getElementById("alignmentBoxEnemy").innerHTML = randomBadGuy.alignment;
 	document.getElementById("armorClassBoxEnemy").innerHTML = randomBadGuy.armorClass;
 	document.getElementById("hitPointsBoxEnemy").innerHTML = randomBadGuy.hitPoints;
-	document.getElementById("enemyHeader").innerHTML = randomBadGuy.name;
+	document.getElementById("enemyHeader").innerHTML = randomBadGuy.name + ' the ' + randomBadGuy.race;
 	document.getElementById("alignmentBoxEnemy").innerHTML = randomBadGuy.alignment;
 	generateEnemySprite();
 
@@ -544,18 +669,24 @@ const getAttacked = () => {
 	if (randomBadGuy.hitPoints > 0) {
 	let damageResult1 = '';
 	const innerRollResult = rollDamageDie(randomBadGuy);
+	if (characterOne.race === 'Elf' && randomBadGuy.race === 'Orc') {
+		innerRollResult = innerRollResult - 2;
+	}
+	else if (characterOne.race === 'Halfling' && randomBadGuy.race != 'Halfling') {
+		innerRollResult = innerRollResult -2;
+	}
 	if (innerRollResult[0] >= characterOne.armorClass) {
 		enemySpriteAttack();
-		characterOne.hitPoints = characterOne.hitPoints -1-abilityModifier(randomBadGuy.strength);
+		characterOne.hitPoints = characterOne.hitPoints -1-abilityModifier(randomBadGuy.strength, 'randomBadGuy.strength');
 		if (innerRollResult[1] === 20) {
 			
-			characterOne.hitPoints = characterOne.hitPoints -1-abilityModifier(randomBadGuy.strength);
-			let damageDealt1 = 2*(1+abilityModifier(randomBadGuy.strength))
+			characterOne.hitPoints = characterOne.hitPoints -1-abilityModifier(randomBadGuy.strength, 'randomBadGuy.strength');
+			let damageDealt1 = 2*(1+abilityModifier(randomBadGuy.strength, 'randomBadGuy.strength'))
 			damageResult1 = `${damageDealt1} dmg`;
 		}
 		else {
 			
-			let damageDealt1 = 1+abilityModifier(randomBadGuy.strength);
+			let damageDealt1 = 1+abilityModifier(randomBadGuy.strength, 'randomBadGuy.strength');
 			damageResult1 = `${damageDealt1} dmg`;			
 		}
 		
@@ -582,7 +713,7 @@ const attackPlayer = () => {
 	let damageDealt = 0;
 	let enemyDexModIfPositive = 0;
 	if (abilityModifier(randomBadGuy.dexterity)>=0) {
-		 enemyDexModIfPositive = abilityModifier(randomBadGuy.dexterity);
+		 enemyDexModIfPositive = abilityModifier(randomBadGuy.dexterity, 'randomBadGuy.dexterity');
 	}
 	else {
 		 enemyDexModIfPositive = 0;
@@ -597,7 +728,12 @@ if (characterOne.name != 'name'&& characterOne.name != '') {
 				//after confirming they are alive proceed with rolling for attack
 			else {	
 				const rollResult = rollDamageDie(characterOne);
+				if (characterOne.race === 'Dwarf' && randomBadGuy.race === 'Orc') {
+					rollResult[0] = rollResult[0] + characterOne.levelAttackRollModifier + 2;
+				}
+				else {
 				rollResult[0] = rollResult[0] + characterOne.levelAttackRollModifier;
+				}
 				//paladins have the ability to increase their roll if against an evil enemy
 				if (characterOne.characterClass === 'paladin' && randomBadGuy.alignment === 'Evil') {
 					rollResult[0] = rollResult[0] + 2;
@@ -610,93 +746,93 @@ if (characterOne.name != 'name'&& characterOne.name != '') {
 					document.getElementById("experienceCell").innerHTML = characterOne.experience;
 					//various class unique abilities being taken into account
 					if (characterOne.characterClass === 'rogue') {
-						damageDealt = 1+abilityModifier(characterOne.dexterity);
+						damageDealt = 1 + abilityModifier(characterOne.dexterity, 'characterOne.dexterity');
 						if (damageDealt <= 0){
 							damageDealt = 1;
 							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
 						}
 						else {
-						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.dexterity);
+						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.dexterity, 'characterOne.dexterity');
 						}
 						console.log(`As a rogue I used dexterity mod to my attack which was ${characterOne.dexterity}`);
 					}
 					else if (characterOne.characterClass === 'monk') {
-						damageDealt = 3+abilityModifier(characterOne.strength);
+						damageDealt = 3+abilityModifier(characterOne.strength, 'characterOne.strength');
 						if (damageDealt <= 0){
 							damageDealt = 1;
 							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
 						}
 						else {
-						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 3 - abilityModifier(characterOne.strength);
+						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 3 - abilityModifier(characterOne.strength, 'characterOne.strength');
 						}
 						console.log(`As a monk I hit 3 default damage`);
 					}
 					else if (characterOne.characterClass === 'paladin' && randomBadGuy.alignment === 'Evil') {
-						damageDealt = 1+abilityModifier(characterOne.strength)+2;
+						damageDealt = 1+abilityModifier(characterOne.strength, 'characterOne.strength')+2;
 						if (damageDealt <= 0){
 							damageDealt = 1;
 							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
 						}
 						else {
-						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength) - 2;
+						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength, 'characterOne.strength') - 2;
 						}
 						console.log(damageDealt);
 					}
 					//if no class unique abilities are relevant proceed to the standard combat
 					else {
-						damageDealt = 1+abilityModifier(characterOne.strength);
+						damageDealt = 1+abilityModifier(characterOne.strength, 'characterOne.strength');
 						if (damageDealt <= 0){
 							damageDealt = 1;
 							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
 						}
 						else {
-						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength);
+						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength, 'characterOne.strength');
 						}
 					}
 					let damageResult = `${damageDealt} dmg`;
 					//Critical roll section, this never replaces the above combat steps but instead adds to them.  i.e. no 2* damage, it allows for the damage above, then repeats same damage below
-					if (rollResult[1]=== 20) {
+					if (rollResult[1]=== 20 || (characterOne.race === 'Elf' && rollResult[1] === 19)) {
 						//class specific crit rules
 						if (characterOne.characterClass === 'monk') {
-							damageDealt = 2*(3+abilityModifier(characterOne.strength));
+							damageDealt = 2*(3+abilityModifier(characterOne.strength, 'characterOne.strength'));
 							if (damageDealt <= 0){
 							damageDealt = 2;
 							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
 						}
 						else {
-							damageDealt = 2*(3+abilityModifier(characterOne.strength));
+							damageDealt = 2*(3+abilityModifier(characterOne.strength, 'characterOne.strength'));
 							if (damageDealt <= 0){
 							damageDealt = 2;
 							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
 						}
 						else {
-							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 3 - abilityModifier(characterOne.strength);
+							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 3 - abilityModifier(characterOne.strength, 'characterOne.strength');
 						}
 							
 						}
 						}
 						else if (characterOne.characterClass === 'paladin' && randomBadGuy.alignment === 'Evil') {
-							damageDealt = 3*(1+abilityModifier(characterOne.strength)+2);
+							damageDealt = 3*(1+abilityModifier(characterOne.strength, 'characterOne.strength')+2);
 							if (damageDealt <= 0){
 							damageDealt = 2;
 							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
 						}
 						else {
-							randomBadGuy.hitPoints = randomBadGuy.hitPoints - (2*(1 + abilityModifier(characterOne.strength) + 2));
+							randomBadGuy.hitPoints = randomBadGuy.hitPoints - (2*(1 + abilityModifier(characterOne.strength, 'characterOne.strength') + 2));
 						}
 						}	
 						else {
-							damageDealt = 2*(1+abilityModifier(characterOne.strength));
+							damageDealt = 2*(1+abilityModifier(characterOne.strength, 'characterOne.strength'));
 							if (damageDealt <= 0){
 							damageDealt = 2;
 							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
 						}
 						else {
-							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength);
+							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength, 'characterOne.strength');
 						}
 							if (characterOne.characterClass === 'rogue') {
-								randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.dexterity);
-							damageDealt = 3*(1+abilityModifier(characterOne.dexterity));
+								randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.dexterity, 'characterOne.dexterity');
+							damageDealt = 3*(1+abilityModifier(characterOne.dexterity, 'characterOne.dexterity'));
 							console.log('ROGUE CRITICAL');
 							}
 						}
