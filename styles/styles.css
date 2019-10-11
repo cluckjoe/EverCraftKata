@@ -47,13 +47,13 @@ justify-content: left;}
 	 
     
 	width: 84px;
-    height: 65px;   
+    height: 40px;   
   background-color: #4CAF50;
-  border: black;
+  border: 2px solid #000000; /* Black */
   color: white;
   padding: 10px 10px;
   text-align: center;
-  font-size: 14px;
+  font-size: 10px;
   font-weight:700;
   cursor: pointer;
     /*position:relative;
@@ -88,7 +88,7 @@ top: 191px
     	width: 84px;
     height: 65px;   
   background-color: #4CAF50;
-  border: black;
+  border: 2px solid #000000; /* Black */
   color: white;
   padding: 10px 10px;
   text-align: center;
@@ -123,7 +123,7 @@ top: 191px
 	width: 84px;
     height: 65px;   
   background-color: #4CAF50;
-  border: black;
+  border: 2px solid #000000; /* Black */
   color: white;
   padding: 10px 10px;
   text-align: center;
@@ -161,13 +161,13 @@ top: 191px
 	 
    
 	width: 84px;
-    height: 55px;   
+    height: 40px;   
   background-color: #4CAF50;
-  border: black;
+  border: 2px solid #000000; /* Black */
   color: white;
   padding: 10px 10px;
   text-align: center;
-  font-size: 14px;
+  font-size: 10px;
   font-weight:700;
   cursor: pointer;
      /*position:relative;
@@ -176,9 +176,22 @@ top: 191px
     left: -570px;*/
     
    
- 
 }
 
+.buttonRace {
+	 
+   
+	width: 84px;
+    height: 40px;   
+  background-color: #4CAF50;
+  border: 2px solid #000000; /* Black */
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  font-size: 10px;
+  font-weight:700;
+  cursor: pointer;
+}
 .button:hover {
   background-color: green;
 }
@@ -188,3 +201,10 @@ top: 191px
 .buttonBadGuy:hover {
   background-color: green;
 }
+.buttonAttack:hover {
+	background-color: green;
+}
+.buttonRace:hover {
+	background-color: green;
+}
+	
