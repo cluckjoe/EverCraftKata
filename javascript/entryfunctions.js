@@ -347,7 +347,7 @@ const enterClass = () => {
 	let characterClassLower = characterClass.toLowerCase();
 	switch(characterClassLower) {
 		case "rogue": 
-			if (characterOne.alignment === 'good') {
+			if (characterOne.alignment === 'Good') {
 				alert('you cannot play as a rogue if your alignment is good');
 				characterOne.characterClass = '';
 			}
