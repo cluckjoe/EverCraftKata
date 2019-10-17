@@ -62,7 +62,7 @@ let arrayOfNames = ['Dannielle',
 'Melanie'
 
 ];
-const defaultDamage = 1;
+let defaultDamage = 1;
 
 let characterOne = {
 	name: '',
@@ -109,6 +109,40 @@ let buttonDeletion = {
 	race: ''
 }
 
+function dont() { 
+return false; }
+
+const saveCharacter = (myCharacter, saveWith) => {
+    switch(saveWith){
+        case "cookie":
+            saveInCookie(myCharacter);
+        break;
+        case "server":
+            saveOnServer(myCharacter);
+        break;
+        default:
+            alert('Dummy, you didn\'t specify where to save it!');
+    }
+}
+
+const saveInCookie = (character) => {
+    var c = JSON.stringify(character); //now my character is a string!
+    document.cookie = c;
+}
+
+const loadFromCookie =() => {
+    var c = document.cookie;
+    var myCharacter = JSON.parse(c);
+    return myCharacter;
+}
+
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
 //Used whenever something requires the ability modifier of a characters skill
 const abilityModifier = (character,characterString) => {
 	
@@ -685,14 +719,14 @@ let damageDealt1 = 0;
 const getAttacked = () => {
 	if (randomBadGuy.hitPoints > 0) {
 	let damageResult1 = '';
-	const innerRollResult = rollDamageDie(randomBadGuy);
+	let innerRollResult = rollDamageDie(randomBadGuy);
 	if (characterOne.race === 'Elf' && randomBadGuy.race === 'Orc') {
-		innerRollResult = innerRollResult - 2;
+		innerRollResult[0] = innerRollResult[0] - 2;
 	}
 	else if (characterOne.race === 'Halfling' && randomBadGuy.race != 'Halfling') {
-		innerRollResult = innerRollResult -2;
+		innerRollResult[0] = innerRollResult[0] -2;
 	}
-	if (innerRollResult[0] >= characterOne.armorClass) {
+	if (innerRollResult[0] >= characterOne.armorClass || innerRollResult[1] === 20) {
 		enemySpriteAttack();
 		characterOne.hitPoints = characterOne.hitPoints -1-abilityModifier(randomBadGuy.strength, 'randomBadGuy.strength');
 		if (innerRollResult[1] === 20) {
@@ -735,177 +769,187 @@ const attackPlayer = () => {
 	else {
 		 enemyDexModIfPositive = 0;
 	}
-if (characterOne.name != 'name'&& characterOne.name != '') {
-	if (characterOne.hitPoints > 0) {
-		//checks that the bad guy exists at all
-		if(randomBadGuy.name != ''){
-			//confirms bad guy is alive before attempting an attack
-			if (randomBadGuy.hitPoints <= 0) {
-				document.getElementById("attackLog").innerHTML = `They are already dead! Have some mercy!`;}
-				//after confirming they are alive proceed with rolling for attack
-			else {	
-				const rollResult = rollDamageDie(characterOne);
-				if (characterOne.race === 'Dwarf' && randomBadGuy.race === 'Orc') {
-					rollResult[0] = rollResult[0] + characterOne.levelAttackRollModifier + 2;
-				}
-				else {
-				rollResult[0] = rollResult[0] + characterOne.levelAttackRollModifier;
-				}
-				//paladins have the ability to increase their roll if against an evil enemy
-				if (characterOne.characterClass === 'paladin' && randomBadGuy.alignment === 'Evil') {
-					rollResult[0] = rollResult[0] + 2;
-				}
-				//Begin section of effects for a successful hit
-				if (rollResult[0] >= randomBadGuy.armorClass || rollResult[1] === 20 || ((characterOne.characterClass === 'rogue')&&(rollResult[0] >= (randomBadGuy.armorClass - enemyDexModIfPositive)))) {
-					console.log('initiate successful attack');
-					console.log(characterOne.characterClass);
-					characterOne.experience = characterOne.experience + 10;
-					document.getElementById("experienceCell").innerHTML = characterOne.experience;
-					//various class unique abilities being taken into account
-					if (characterOne.characterClass === 'rogue') {
-						damageDealt = 1 + abilityModifier(characterOne.dexterity, 'characterOne.dexterity');
-						if (damageDealt <= 0){
-							damageDealt = 1;
-							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
-						}
-						else {
-						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.dexterity, 'characterOne.dexterity');
-						}
-						console.log(`As a rogue I used dexterity mod to my attack which was ${characterOne.dexterity}`);
+	if (characterOne.name != 'name'&& characterOne.name != '') {
+		//checks weapon/class to determine default damage
+		if(characterOne.weapon === 'longsword') {
+			defaultDamage = 5;
+		}
+		else if (characterOne.characterClass === 'monk') {
+			defaultDamage = 3;
+		}
+		else { 
+			defaultDamage = 1;
+		}
+		if (characterOne.hitPoints > 0) {
+			//checks that the bad guy exists at all
+			if(randomBadGuy.name != ''){
+				//confirms bad guy is alive before attempting an attack
+				if (randomBadGuy.hitPoints <= 0) {
+					document.getElementById("attackLog").innerHTML = `They are already dead! Have some mercy!`;}
+					//after confirming they are alive proceed with rolling for attack
+				else {	
+					const rollResult = rollDamageDie(characterOne);
+					if (characterOne.race === 'Dwarf' && randomBadGuy.race === 'Orc') {
+						rollResult[0] = rollResult[0] + characterOne.levelAttackRollModifier + 2;
 					}
-					else if (characterOne.characterClass === 'monk') {
-						damageDealt = 3+abilityModifier(characterOne.strength, 'characterOne.strength');
-						if (damageDealt <= 0){
-							damageDealt = 1;
-							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
-						}
-						else {
-						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 3 - abilityModifier(characterOne.strength, 'characterOne.strength');
-						}
-						console.log(`As a monk I hit 3 default damage`);
-					}
-					else if (characterOne.characterClass === 'paladin' && randomBadGuy.alignment === 'Evil') {
-						damageDealt = 1+abilityModifier(characterOne.strength, 'characterOne.strength')+2;
-						if (damageDealt <= 0){
-							damageDealt = 1;
-							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
-						}
-						else {
-						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength, 'characterOne.strength') - 2;
-						}
-						console.log(damageDealt);
-					}
-					//if no class unique abilities are relevant proceed to the standard combat
 					else {
-						damageDealt = 1+abilityModifier(characterOne.strength, 'characterOne.strength');
-						if (damageDealt <= 0){
-							damageDealt = 1;
-							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
-						}
-						else {
-						randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength, 'characterOne.strength');
-						}
+					rollResult[0] = rollResult[0] + characterOne.levelAttackRollModifier;
 					}
-					let damageResult = `${damageDealt} dmg`;
-					//Critical roll section, this never replaces the above combat steps but instead adds to them.  i.e. no 2* damage, it allows for the damage above, then repeats same damage below
-					if (rollResult[1]=== 20 || (characterOne.race === 'Elf' && rollResult[1] === 19)) {
-						//class specific crit rules
-						if (characterOne.characterClass === 'monk') {
-							damageDealt = 2*(3+abilityModifier(characterOne.strength, 'characterOne.strength'));
+					//paladins have the ability to increase their roll if against an evil enemy
+					if (characterOne.characterClass === 'paladin' && randomBadGuy.alignment === 'Evil') {
+						rollResult[0] = rollResult[0] + 2;
+					}
+					//Begin section of effects for a successful hit
+					if (rollResult[0] >= randomBadGuy.armorClass || rollResult[1] === 20 || ((characterOne.characterClass === 'rogue')&&(rollResult[0] >= (randomBadGuy.armorClass - enemyDexModIfPositive)))) {
+						console.log('initiate successful attack');
+						console.log(characterOne.characterClass);
+						characterOne.experience = characterOne.experience + 10;
+						document.getElementById("experienceCell").innerHTML = characterOne.experience;
+						//various class unique abilities being taken into account
+						if (characterOne.characterClass === 'rogue') {
+							damageDealt = defaultDamage + abilityModifier(characterOne.dexterity, 'characterOne.dexterity');
 							if (damageDealt <= 0){
-							damageDealt = 2;
-							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
+								damageDealt = 1;
+								randomBadGuy.hitPoints = randomBadGuy.hitPoints - defaultDamage;
+							}
+							else {
+							randomBadGuy.hitPoints = randomBadGuy.hitPoints - defaultDamage - abilityModifier(characterOne.dexterity, 'characterOne.dexterity');
+							}
+							console.log(`As a rogue I used dexterity mod to my attack which was ${characterOne.dexterity}`);
 						}
-						else {
-							damageDealt = 2*(3+abilityModifier(characterOne.strength, 'characterOne.strength'));
+						else if (characterOne.characterClass === 'monk') {
+							damageDealt = defaultDamage+abilityModifier(characterOne.strength, 'characterOne.strength');
 							if (damageDealt <= 0){
-							damageDealt = 2;
-							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
-						}
-						else {
-							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 3 - abilityModifier(characterOne.strength, 'characterOne.strength');
-						}
-							
-						}
+								damageDealt = 1;
+								randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
+							}
+							else {
+							randomBadGuy.hitPoints = randomBadGuy.hitPoints - defaultDamage - abilityModifier(characterOne.strength, 'characterOne.strength');
+							}
+							console.log(`As a monk I hit ${defaultDamage} default damage`);
 						}
 						else if (characterOne.characterClass === 'paladin' && randomBadGuy.alignment === 'Evil') {
-							damageDealt = 3*(1+abilityModifier(characterOne.strength, 'characterOne.strength')+2);
+							damageDealt = 1+abilityModifier(characterOne.strength, 'characterOne.strength')+2;
 							if (damageDealt <= 0){
-							damageDealt = 2;
-							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
+								damageDealt = 1;
+								randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
+							}
+							else {
+							randomBadGuy.hitPoints = randomBadGuy.hitPoints - defaultDamage - abilityModifier(characterOne.strength, 'characterOne.strength') - 2;
+							}
+							console.log(damageDealt);
 						}
+						//if no class unique abilities are relevant proceed to the standard combat
 						else {
-							randomBadGuy.hitPoints = randomBadGuy.hitPoints - (2*(1 + abilityModifier(characterOne.strength, 'characterOne.strength') + 2));
-						}
-						}	
-						else {
-							damageDealt = 2*(1+abilityModifier(characterOne.strength, 'characterOne.strength'));
+							damageDealt = 1+abilityModifier(characterOne.strength, 'characterOne.strength');
 							if (damageDealt <= 0){
-							damageDealt = 2;
-							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
-						}
-						else {
-							randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.strength, 'characterOne.strength');
-						}
-							if (characterOne.characterClass === 'rogue') {
-								randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1 - abilityModifier(characterOne.dexterity, 'characterOne.dexterity');
-							damageDealt = 3*(1+abilityModifier(characterOne.dexterity, 'characterOne.dexterity'));
-							console.log('ROGUE CRITICAL');
+								damageDealt = 1;
+								randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
+							}
+							else {
+							randomBadGuy.hitPoints = randomBadGuy.hitPoints - defaultDamage - abilityModifier(characterOne.strength, 'characterOne.strength');
 							}
 						}
-						damageResult = `${damageDealt} dmg (it's a crit!)`;
+						let damageResult = `${damageDealt} dmg`;
+						//Critical roll section, this never replaces the above combat steps but instead adds to them.  i.e. no 2* damage, it allows for the damage above, then repeats same damage below
+						if (rollResult[1]=== 20 || (characterOne.race === 'Elf' && rollResult[1] === 19)) {
+							//class specific crit rules
+							if (characterOne.characterClass === 'monk') {
+								damageDealt = 2*(defaultDamage+abilityModifier(characterOne.strength, 'characterOne.strength'));
+								if (damageDealt <= 0){
+								damageDealt = 2;
+								randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
+							}
+							else {
+								damageDealt = 2*(defaultDamage+abilityModifier(characterOne.strength, 'characterOne.strength'));
+								if (damageDealt <= 0){
+								damageDealt = 2;
+								randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
+							}
+							else {
+								randomBadGuy.hitPoints = randomBadGuy.hitPoints - defaultDamage - abilityModifier(characterOne.strength, 'characterOne.strength');
+							}
+								
+							}
+							}
+							else if (characterOne.characterClass === 'paladin' && randomBadGuy.alignment === 'Evil') {
+								damageDealt = 3*(defaultDamage+abilityModifier(characterOne.strength, 'characterOne.strength')+2);
+								if (damageDealt <= 0){
+								damageDealt = 2;
+								randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
+							}
+							else {
+								randomBadGuy.hitPoints = randomBadGuy.hitPoints - (2*(defaultDamage + abilityModifier(characterOne.strength, 'characterOne.strength') + 2));
+							}
+							}	
+							else {
+								damageDealt = 2*(1+abilityModifier(characterOne.strength, 'characterOne.strength'));
+								if (damageDealt <= 0){
+								damageDealt = 2;
+								randomBadGuy.hitPoints = randomBadGuy.hitPoints - 1;
+							}
+							else {
+								randomBadGuy.hitPoints = randomBadGuy.hitPoints - defaultDamage - abilityModifier(characterOne.strength, 'characterOne.strength');
+							}
+								if (characterOne.characterClass === 'rogue') {
+									randomBadGuy.hitPoints = randomBadGuy.hitPoints - defaultDamage - abilityModifier(characterOne.dexterity, 'characterOne.dexterity');
+								damageDealt = 3*(defaultDamage+abilityModifier(characterOne.dexterity, 'characterOne.dexterity'));
+								console.log('ROGUE CRITICAL');
+								}
+							}
+							damageResult = `${damageDealt} dmg (it's a crit!)`;
+						}
+						//The enemy has died
+						if (randomBadGuy.hitPoints <= 0) {
+							if (randomBadGuy.alignment === 'Neutral') {
+								setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteDead.jpg"}, 810)
+							}
+							else if (randomBadGuy.alignment === 'Evil') {
+								setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteDeadRed.jpg"}, 810)
+							}
+							else if (randomBadGuy.alignment === 'Good') {
+								setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteDeadBlue.jpg"}, 810)
+							}
+							document.getElementById("hitPointsBoxEnemy").innerHTML = randomBadGuy.hitPoints;
+							document.getElementById("enemyHeader").innerHTML = randomBadGuy.name + " RIP";
+							document.getElementById("attackLog").innerHTML = ` You rolled a ${rollResult[1]}. and hit for ${damageResult} ${randomBadGuy.name} is dead! You are victorious!`;
+							document.getElementById("attackLog2").innerHTML = ``
+							levelUp();
+						}
+						else {
+							document.getElementById("hitPointsBoxEnemy").innerHTML = randomBadGuy.hitPoints;
+							document.getElementById("attackLog").innerHTML = `You rolled a ${rollResult[1]}.  Your attack was successful! You hit for ${damageResult} and Enemy's HP is now ${randomBadGuy.hitPoints}!`;
+							getAttacked();
+							levelUp();
+							}
 					}
-					//The enemy has died
-					if (randomBadGuy.hitPoints <= 0) {
-						if (randomBadGuy.alignment === 'Neutral') {
-							setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteDead.jpg"}, 810)
-						}
-						else if (randomBadGuy.alignment === 'Evil') {
-							setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteDeadRed.jpg"}, 810)
-						}
-						else if (randomBadGuy.alignment === 'Good') {
-							setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteDeadBlue.jpg"}, 810)
-						}
-						document.getElementById("hitPointsBoxEnemy").innerHTML = randomBadGuy.hitPoints;
-						document.getElementById("enemyHeader").innerHTML = randomBadGuy.name + " RIP";
-						document.getElementById("attackLog").innerHTML = ` You rolled a ${rollResult[1]}. and hit for ${damageResult} ${randomBadGuy.name} is dead! You are victorious!`;
-						document.getElementById("attackLog2").innerHTML = ``
-						levelUp();
+					//End section of effects for a successful hit
+		else {document.getElementById("attackLog").innerHTML = `You rolled a ${rollResult[1]}.  Your attack failed!`;
+		console.log('i have missed');
+		}
+		//see getAttacked function for the bad guys turn to attack
+		getAttacked();
+		if (characterOne.hitPoints <= 0) {
+			if (randomBadGuy.alignment === 'Neutral') {
+								setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteWin.jpg"}, 810)
+							}
+							else if (randomBadGuy.alignment === 'Evil') {
+								setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteWinRed.jpg"}, 810)
+							}
+							else if (randomBadGuy.alignment === 'Good') {
+								setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteWinBlue.jpg"}, 810)
+							}
+		}
 					}
-					else {
-						document.getElementById("hitPointsBoxEnemy").innerHTML = randomBadGuy.hitPoints;
-						document.getElementById("attackLog").innerHTML = `You rolled a ${rollResult[1]}.  Your attack was successful! You hit for ${damageResult} and Enemy's HP is now ${randomBadGuy.hitPoints}!`;
-						getAttacked();
-						levelUp();
-						}
-				}
-				//End section of effects for a successful hit
-	else {document.getElementById("attackLog").innerHTML = `You rolled a ${rollResult[1]}.  Your attack failed!`;
-	console.log('i have missed');
-	}
-	//see getAttacked function for the bad guys turn to attack
-	getAttacked();
-	if (characterOne.hitPoints <= 0) {
-		if (randomBadGuy.alignment === 'Neutral') {
-							setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteWin.jpg"}, 810)
-						}
-						else if (randomBadGuy.alignment === 'Evil') {
-							setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteWinRed.jpg"}, 810)
-						}
-						else if (randomBadGuy.alignment === 'Good') {
-							setTimeout(function(){document.getElementById("enemySprite").src = "./goblinSpriteWinBlue.jpg"}, 810)
-						}
-	}
-				}
+			}
+			//sections to accomodate an attempt to attack before character creation or enemy creation
+			else {document.getElementById("attackLog").innerHTML = `You do not yet have an enemy!`;
+			}
+		
 		}
-		//sections to accomodate an attempt to attack before character creation or enemy creation
-		else {document.getElementById("attackLog").innerHTML = `You do not yet have an enemy!`;
+		
 		}
-	
-	}
-	
-	}
-	else {document.getElementById("attackLog").innerHTML = `You don't even exist yet!`}
+		else {document.getElementById("attackLog").innerHTML = `You don't even exist yet!`}
 }
 
 
