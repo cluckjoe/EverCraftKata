@@ -10,6 +10,7 @@ div {
 
 .title {
 	font-family: Papyrus, Fantasy, Arial;
+	color: white;
 	position: relative;
 	top: 0;
 	left: 0;
@@ -67,12 +68,14 @@ justify-content: left;}
 
 h2.characterSheet {
 	font-family:Papyrus,Fantasy,garamond,serif;
+	color: white;
 	position:relative;
 	left: -580px;
 }
 
 h2.enemyHeader {
 	font-family:Papyrus,Fantasy,garamond,serif;
+	color: white;
 	position:relative;
 	left: -580px;
 }
@@ -147,21 +150,71 @@ top: 191px
     left: 250px;
 }
 
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 500px;
+  right: 800px;
+  border: 3px solid #f1f1f1;
+
+}
+
 .attackLog {
 	position:relative;
+	color: white;
 	top: -100px;
 	left: 0px;
 }
 .attackLog2 {
 	position:relative;
+	color: white;
 	top: -100px;
 	left: 0px;
 }
+
+.open-button {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #000000; /* Black */
+  cursor: pointer;
+  opacity: 0.8;
+  position: relative;
+  top: -150px;
+  left: -740px;
+
+}
+.longsword-button {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #000000; /* Black */
+  cursor: pointer;
+  opacity: 0.8;
+  position: relative;
+ 
+
+}
+.dagger-button {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #000000; /* Black */
+  cursor: pointer;
+  opacity: 0.8;
+  position: relative;
+ 
+
+}
+
+.open-button-p {
+  position: relative;
+  top: -100px;
+  left: -800px;
+
+}
+
 .buttonAlignment {
 	 
-   
-	width: 84px;
-    height: 40px;   
+  width: 84px;
+  height: 40px;   
   background-color: #4CAF50;
   border: 2px solid #000000; /* Black */
   color: white;
