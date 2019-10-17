@@ -33,14 +33,15 @@
 
 
 <h2 class ="characterSheet" id = "characterSheet"></h2>
-<table style="width:30%" id="theTable">
+<table style="width:30%" id="theTable" >
 <style>
 table, th, td {
   border: 1px solid black;
+  color: white;
 }
 </style>
   <tr>
-    <th>Alignment</th>
+    <th >Alignment</th>
 	<th>MOD</th>
     <th>Armor Class</th> 
 	<th>MOD</th>
@@ -141,11 +142,16 @@ table, th, td {
 <img id = "enemySprite" class = "enemySprite" src="./blankWhiteBackground.jpg"  width="120"
          height="120">
 
+
+<p class = "open-button-p">Weapon:</p> 
+<input class = "open-button" type="image" src="./weapon_icon.jpg" onclick = "openForm()" />
+
 <h2 class ="enemyHeader" id="enemyHeader" >Enemy</h2>
 <table style="width:30%" id="theTableEnemy">
 <style>
 table, th, td {
   border: 1px solid black;
+   color: white;
 }
 </style>
   <tr>
@@ -170,5 +176,16 @@ table, th, td {
 	 
 	<p id = "attackLog" class = "attackLog"></p>
 	<p id = "attackLog2" class = "attackLog2"></p>
+	
+	
+	
+<div class="form-popup" id="myForm">
+  <form class="form-container" >
+    <h1>Select Weapon</h1>  
+	<input class = "longsword-button" type="image" src="./weapon-longsword.jpg" onclick = "closeForm()" />
+	<input class = "dagger-button" type="image" src="./weapon-dagger.jpg" onclick = "closeForm()" />
+  </form>
+</div>
+
   </body>
 </html>
