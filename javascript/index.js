@@ -272,8 +272,8 @@ const retrieveCharacter = () => {
 
 const loadFunction = () => {
 	console.log('initializing load function');
-	
-	if (characterOne.Saved === 1) {
+	let savedCharacter = retrieveCharacter();
+	if (savedCharacter.Saved === 1) {
 		console.log('loading saved character');
 	characterOne = retrieveCharacter();
 	document.getElementById("characterSheet").innerHTML = characterOne.name + ' the ' + characterOne.race;
