@@ -270,43 +270,6 @@ const retrieveCharacter = () => {
     return myCharacter;
 }
 
-const loadFunction = () => {
-	console.log('initializing load function');
-	let savedCharacter = retrieveCharacter();
-	if (savedCharacter.Saved === 1) {
-		console.log('loading saved character');
-	characterOne = retrieveCharacter();
-	document.getElementById("characterSheet").innerHTML = characterOne.name + ' the ' + characterOne.race;
-	document.getElementById("armorClassBox").innerHTML = characterOne.armorClass;
-	document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints;
-	document.getElementById("alignmentBox").innerHTML = characterOne.alignment;
-	document.getElementById("strengthBox").innerHTML = characterOne.strength;
-	document.getElementById("dexterityBox").innerHTML = characterOne.dexterity;
-	document.getElementById("charismaBox").innerHTML = characterOne.charisma;
-	document.getElementById("constitutionBox").innerHTML = characterOne.constitution;
-	document.getElementById("wisdomBox").innerHTML = characterOne.wisdom;
-	document.getElementById("intelligenceBox").innerHTML = characterOne.intelligence;
-	document.getElementById("characterClassBox").innerHTML = characterOne.charachterClass;
-	populateAbilityMods();
-	}
-	if (characterOne.buttonDeleteCheck === 1) {
-		$( ".button" ).remove();
-		$( ".buttonAlignment" ).remove();
-		$( '.buttonStrength').remove();
-		$( '.buttonDexterity').remove();
-		$( '.buttonCharisma').remove();
-		$( '.buttonConstitution').remove();
-		$( '.buttonWisdom').remove();
-		$( '.buttonIntelligence').remove();
-		$( '.buttonClass').remove();
-		$( '.buttonRace').remove();
-		document.getElementById("theTable").deleteRow(2);
-		document.getElementById("theTable").deleteRow(4);
-		document.getElementById("theTable").deleteRow(6);
-		document.getElementById("theTable").deleteRow(8);
-	}
-	
-}
 
 
 
@@ -1185,5 +1148,42 @@ const testFunction = () => {
 
 }
 */
+const loadFunction = () => {
+	console.log('initializing load function');
+	let savedCharacter = retrieveCharacter();
+	if (savedCharacter.Saved === 1) {
+		console.log('loading saved character');
+	characterOne = retrieveCharacter();
+	document.getElementById("characterSheet").innerHTML = characterOne.name + ' the ' + characterOne.race;
+	document.getElementById("armorClassBox").innerHTML = characterOne.armorClass;
+	document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints;
+	document.getElementById("alignmentBox").innerHTML = characterOne.alignment;
+	document.getElementById("strengthBox").innerHTML = characterOne.strength;
+	document.getElementById("dexterityBox").innerHTML = characterOne.dexterity;
+	document.getElementById("charismaBox").innerHTML = characterOne.charisma;
+	document.getElementById("constitutionBox").innerHTML = characterOne.constitution;
+	document.getElementById("wisdomBox").innerHTML = characterOne.wisdom;
+	document.getElementById("intelligenceBox").innerHTML = characterOne.intelligence;
+	document.getElementById("characterClassBox").innerHTML = characterOne.charachterClass;
+	populateAbilityMods();
+	}
+	if (characterOne.buttonDeleteCheck === 1) {
+		$( ".button" ).remove();
+		$( ".buttonAlignment" ).remove();
+		$( '.buttonStrength').remove();
+		$( '.buttonDexterity').remove();
+		$( '.buttonCharisma').remove();
+		$( '.buttonConstitution').remove();
+		$( '.buttonWisdom').remove();
+		$( '.buttonIntelligence').remove();
+		$( '.buttonClass').remove();
+		$( '.buttonRace').remove();
+		document.getElementById("theTable").deleteRow(2);
+		document.getElementById("theTable").deleteRow(4);
+		document.getElementById("theTable").deleteRow(6);
+		document.getElementById("theTable").deleteRow(8);
+	}
+	
+}
 
 window.onload = loadFunction();
