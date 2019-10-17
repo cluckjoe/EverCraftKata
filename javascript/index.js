@@ -1164,7 +1164,7 @@ const loadFunction = () => {
 	document.getElementById("constitutionBox").innerHTML = characterOne.constitution;
 	document.getElementById("wisdomBox").innerHTML = characterOne.wisdom;
 	document.getElementById("intelligenceBox").innerHTML = characterOne.intelligence;
-	document.getElementById("characterClassBox").innerHTML = characterOne.charachterClass;
+	document.getElementById("characterClassBox").innerHTML = characterOne.characterClass;
 	populateAbilityMods();
 	}
 	if (characterOne.buttonDeleteCheck === 1) {
