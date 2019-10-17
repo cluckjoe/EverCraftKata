@@ -138,6 +138,24 @@ top: 191px
   left: 150px;
 }
 
+.buttonReset {
+	 
+    
+	width: 65px;
+    height: 35px;   
+  background-color: #4CAF50;
+  border: 2px solid #000000; /* Black */
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  font-size: 14px;
+  font-weight:700;
+  cursor: pointer;
+  position:fixed;
+  top: 0px;
+  left: 0px;
+}
+
 .enemySprite {
 	 
     border-style: solid;
@@ -258,6 +276,9 @@ top: 191px
 	background-color: green;
 }
 .buttonRace:hover {
+	background-color: green;
+}
+.buttonReset:hover {
 	background-color: green;
 }
 	
