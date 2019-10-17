@@ -1,5 +1,7 @@
 document.getElementById('date').innerHTML = new Date().toDateString();
 
+
+
 /*class Character {
 	constructor(name) {
 	this._name = name;}
@@ -80,7 +82,9 @@ let characterOne = {
 	levelAttackRollModifier: 0,
 	characterClass: '',
 	race: 'Human',
-	equippedWeapon: ''
+	equippedWeapon: '',
+	buttonDeleteCheck: 0,
+	Saved: 0
 }
 
 let randomBadGuy = {
@@ -112,7 +116,7 @@ let buttonDeletion = {
 function dont() { 
 return false; }
 
-const saveCharacter = (myCharacter, saveWith) => {
+/*const saveCharacter = (myCharacter, saveWith) => {
     switch(saveWith){
         case "cookie":
             saveInCookie(myCharacter);
@@ -134,16 +138,8 @@ const loadFromCookie =() => {
     var c = document.cookie;
     var myCharacter = JSON.parse(c);
     return myCharacter;
-}
+}*/
 
-function openForm() {
-  document.getElementById("myForm").style.display = "block";
-}
-
-function closeForm() {
-  document.getElementById("myForm").style.display = "none";
-}
-//Used whenever something requires the ability modifier of a characters skill
 const abilityModifier = (character,characterString) => {
 	
 	returnValue = 0;
@@ -240,6 +236,129 @@ if (characterOne.race === 'Dwarf' && randomBadGuy.race === 'Orc' && characterStr
 return returnValue;
 }
 
+
+const populateAbilityMods = () => {
+	const strengthModifier = abilityModifier(characterOne.strength, 'characterOne.strength');
+	const dexterityModifier = abilityModifier(characterOne.dexterity, 'characterOne.dexterity');
+	const charismaModifier = abilityModifier(characterOne.charisma, 'characterOne.charisma');
+	const wisdomModifier = abilityModifier(characterOne.wisdom, 'characterOne.wisdom');
+	const intelligenceModifier = abilityModifier(characterOne.intelligence, 'characterOne.intelligence');
+	const constitutionModifier = abilityModifier(characterOne.constitution, 'characterOne.constitution');
+	document.getElementById("strengthModBox").innerHTML = strengthModifier;
+	document.getElementById("dexterityModBox").innerHTML = dexterityModifier;
+	document.getElementById("charismaModBox").innerHTML = charismaModifier;
+	document.getElementById("wisdomModBox").innerHTML = wisdomModifier;
+	document.getElementById("intelligenceModBox").innerHTML = intelligenceModifier;
+	document.getElementById("constitutionModBox").innerHTML = constitutionModifier;
+}
+
+
+
+
+
+const saveCharacter = (character) => {
+	console.log('save function running')
+	characterOne.Saved = 1;
+	let c = JSON.stringify(character); //now my character is a string!
+    document.cookie = c;
+	
+}
+
+const retrieveCharacter = () => {
+	   var c = document.cookie;
+    var myCharacter = JSON.parse(c);
+    return myCharacter;
+}
+
+const loadFunction = () => {
+	console.log('initializing load function');
+	
+	if (characterOne.Saved === 1) {
+		console.log('loading saved character');
+	characterOne = retrieveCharacter();
+	document.getElementById("characterSheet").innerHTML = characterOne.name + ' the ' + characterOne.race;
+	document.getElementById("armorClassBox").innerHTML = characterOne.armorClass;
+	document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints;
+	document.getElementById("alignmentBox").innerHTML = characterOne.alignment;
+	document.getElementById("strengthBox").innerHTML = characterOne.strength;
+	document.getElementById("dexterityBox").innerHTML = characterOne.dexterity;
+	document.getElementById("charismaBox").innerHTML = characterOne.charisma;
+	document.getElementById("constitutionBox").innerHTML = characterOne.constitution;
+	document.getElementById("wisdomBox").innerHTML = characterOne.wisdom;
+	document.getElementById("intelligenceBox").innerHTML = characterOne.intelligence;
+	document.getElementById("classBox").innerHTML = characterOne.class;
+	populateAbilityMods();
+	}
+	if (characterOne.buttonDeleteCheck === 1) {
+		$( ".button" ).remove();
+		$( ".buttonAlignment" ).remove();
+		$( '.buttonStrength').remove();
+		$( '.buttonDexterity').remove();
+		$( '.buttonCharisma').remove();
+		$( '.buttonConstitution').remove();
+		$( '.buttonWisdom').remove();
+		$( '.buttonIntelligence').remove();
+		$( '.buttonClass').remove();
+		$( '.buttonRace').remove();
+		document.getElementById("theTable").deleteRow(2);
+		document.getElementById("theTable").deleteRow(4);
+		document.getElementById("theTable").deleteRow(6);
+		document.getElementById("theTable").deleteRow(8);
+	}
+	
+}
+
+
+
+
+
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+  saveCharacter(characterOne);
+  console.log('saving character')
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+
+const resetTheCharacter = () => {
+	let characterOne = {
+	name: '',
+	alignment: '',
+	armorClass: 10,
+	hitPoints: 5,
+	strength: 10,
+	dexterity: 10,
+	constitution: 10,
+	wisdom: 10,
+	intelligence: 10,
+	charisma: 10,
+	experience: 0,
+	level: 1,
+	levelAttackRollModifier: 0,
+	characterClass: '',
+	race: 'Human',
+	equippedWeapon: '',
+	buttonDeleteCheck: 0,
+	Saved: 0
+}
+
+let buttonDeletion = {
+	name: '',
+	alignment: '',
+	strength: '',
+	dexterity: '',
+	constitution: '',
+	wisdom: '',
+	intelligence: '',
+	charisma: '',
+	characterClass: '',
+	race: ''
+}
+  saveCharacter(characterOne);
+}
+
 const deleteTheButtons = () => {
 	
 	if (buttonDeletion.name === 'done' && buttonDeletion.alignment === 'done' && buttonDeletion.strength === 'done' && buttonDeletion.dexterity === 'done' && buttonDeletion.constitution === 'done' && buttonDeletion.wisdom === 'done' && buttonDeletion.intelligence === 'done' && buttonDeletion.charisma === 'done' && buttonDeletion.characterClass === 'done' && buttonDeletion.race === 'done') {
@@ -258,6 +377,7 @@ const deleteTheButtons = () => {
 		document.getElementById("theTable").deleteRow(4);
 		document.getElementById("theTable").deleteRow(6);
 		document.getElementById("theTable").deleteRow(8);
+		characterOne.buttonDeleteCheck = 1;
 		endSetTasks();
 		
 	}
@@ -536,20 +656,7 @@ const enterClass = () => {
 	}
 	}
 
-const populateAbilityMods = () => {
-	const strengthModifier = abilityModifier(characterOne.strength, 'characterOne.strength');
-	const dexterityModifier = abilityModifier(characterOne.dexterity, 'characterOne.dexterity');
-	const charismaModifier = abilityModifier(characterOne.charisma, 'characterOne.charisma');
-	const wisdomModifier = abilityModifier(characterOne.wisdom, 'characterOne.wisdom');
-	const intelligenceModifier = abilityModifier(characterOne.intelligence, 'characterOne.intelligence');
-	const constitutionModifier = abilityModifier(characterOne.constitution, 'characterOne.constitution');
-	document.getElementById("strengthModBox").innerHTML = strengthModifier;
-	document.getElementById("dexterityModBox").innerHTML = dexterityModifier;
-	document.getElementById("charismaModBox").innerHTML = charismaModifier;
-	document.getElementById("wisdomModBox").innerHTML = wisdomModifier;
-	document.getElementById("intelligenceModBox").innerHTML = intelligenceModifier;
-	document.getElementById("constitutionModBox").innerHTML = constitutionModifier;
-}
+
 
 
 //CHARACTER CREATION AND MODIFICATION
@@ -1079,3 +1186,5 @@ const testFunction = () => {
 
 }
 */
+
+window.onload = loadFunction();
