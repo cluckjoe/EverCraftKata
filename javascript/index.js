@@ -1165,6 +1165,8 @@ const loadFunction = () => {
 	document.getElementById("wisdomBox").innerHTML = characterOne.wisdom;
 	document.getElementById("intelligenceBox").innerHTML = characterOne.intelligence;
 	document.getElementById("characterClassBox").innerHTML = characterOne.characterClass;
+	document.getElementById("levelCell").innerHTML = characterOne.level;
+	document.getElementById("experienceCell").innerHTML = characterOne.experience;
 	populateAbilityMods();
 	}
 	if (characterOne.buttonDeleteCheck === 1) {
