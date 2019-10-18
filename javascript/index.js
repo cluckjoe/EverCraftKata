@@ -277,12 +277,13 @@ const retrieveCharacter = () => {
 
 function openForm() {
   document.getElementById("myForm").style.display = "block";
-  saveCharacter(characterOne);
-  console.log('saving character')
+  
 }
 
 function closeForm() {
   document.getElementById("myForm").style.display = "none";
+saveCharacter(characterOne);
+  console.log('saving character')
 }
 
 const resetTheCharacter = () => {
