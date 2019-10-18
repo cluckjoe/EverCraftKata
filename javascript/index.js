@@ -1189,4 +1189,4 @@ const loadFunction = () => {
 }
 //window.onload = loadFunction();
 $(document).ready(loadFunction()
-});
+);
