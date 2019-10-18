@@ -483,6 +483,7 @@ const weaponSelection = (weapon) => {
 			}
 		else {
 		characterOne.levelAttackRollModifier = characterOne.weaponAttackRollModifier;
+		console.log(characterOne.levelAttackRollModifier)
 		defaultDamage = 5;
 		characterOne.equippedWeapon = 'longsword';
 		}
@@ -512,6 +513,7 @@ const weaponSelection = (weapon) => {
 		characterOne.levelAttackRollModifier = characterOne.weaponAttackRollModifier
 		defaultDamage = 1;
 		characterOne.equippedWeapon = 'barehands';
+		console.log(characterOne.levelAttackRollModifier)
 	}
 	closeForm();
 }
