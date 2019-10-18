@@ -1240,5 +1240,5 @@ const loadFunction = () => {
 	
 }
 //window.onload = loadFunction();
-$(document).ready(loadFunction()
-);
+setTimeout($(document).ready(loadFunction()
+), 1000);
