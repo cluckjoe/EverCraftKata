@@ -3,8 +3,8 @@
   <head>
     <title >EverCraft KATA</title>
     <link rel="stylesheet" href="./styles/styles.css" />
-	<script async src="./javascript/jquery-3.4.1.js"></script>
-    <script async src="./javascript/index.js"></script>
+	<script src="./javascript/jquery-3.4.1.js"></script>
+    <script src="./javascript/index.js"></script>
   </head>
   <body>
 
@@ -186,8 +186,10 @@ table, th, td {
 <div class="form-popup" id="myForm">
   <form class="form-container" >
     <h1>Select Weapon</h1>  
-	<input class = "longsword-button" type="image" src="./weapon-longsword.jpg" onclick = "closeForm()" />
-	<input class = "dagger-button" type="image" src="./weapon-dagger.jpg" onclick = "closeForm()" />
+	<input class = "longsword-button" type="image" src="./weapon-longsword.jpg" onclick = "weaponSelection(longsword)" />
+	<input class = "dagger-button" type="image" src="./weapon-dagger.jpg" onclick = "weaponSelection(dagger)" />
+	<input class = "nunchucks-button" type="image" src="./weapon-nunchucks.jpg" onclick = "weaponSelection(nunchucks)" />
+	<input class = "barehands-button" type="image" src="./weapon-barehands.jpg" onclick = "weaponSelection(barehands)" />
   </form>
 </div>
 
