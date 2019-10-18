@@ -1,5 +1,4 @@
-//document.getElementById('date').innerHTML = new Date().toDateString();
-
+document.getElementById('date').innerHTML = new Date().toDateString();
 
 
 /*class Character {
@@ -82,9 +81,10 @@ let characterOne = {
 	levelAttackRollModifier: 0,
 	characterClass: '',
 	race: 'Human',
-	equippedWeapon: '',
+	equippedWeapon: 'barehands',
 	buttonDeleteCheck: 0,
-	Saved: 0
+	Saved: 0,
+	WeaponAttackRollModifier: 0
 }
 
 let randomBadGuy = {
@@ -255,20 +255,21 @@ const populateAbilityMods = () => {
 
 
 
-
 const saveCharacter = (character) => {
 	console.log('save function running')
 	characterOne.Saved = 1;
 	let c = JSON.stringify(character); //now my character is a string!
-    document.cookie = c;
+	document.cookie = c;
 	
 }
 
 const retrieveCharacter = () => {
-	   var c = document.cookie;
+   var c = document.cookie;
     var myCharacter = JSON.parse(c);
     return myCharacter;
 }
+
+
 
 
 
@@ -473,6 +474,48 @@ const enterAlignment = () => {
 	}
 	
 	
+	
+const weaponSelection = (weapon) => {
+	if (weapon === 'longsword') {
+		if (characterOne.characterClass === 'monk'){
+			alert('Monk\'s cannot wield longswords');
+			}
+		else {
+		characterOne.levelAttackRollModifier = characterOne.weaponAttackRollModifier;
+		defaultDamage = 5;
+		characterOne.equippedWeapon = 'longsword';
+		}
+	}
+	if (weapon === 'dagger') {
+		if (characterOne.characterClass === 'monk'){
+			alert('Monk\'s cannot wield daggers');
+			}
+		else {
+			characterOne.equippedWeapon = 'dagger'
+			characterOne.levelAttackRollModifier = characterOne.weaponAttackRollModifier + 2;
+			defaultDamage = 3;
+			//1.5 extra multiplier to damage dealt on a critical
+		}
+	}
+	if (weapon === 'nunchucks') {
+		characterOne.equippedWeapon = 'nunchucks';
+		if (characterOne.characterClass === 'monk') {
+			defaultDamage = 6;
+		}
+		else {
+			defaultDamage = 6;
+			characterOne.levelAttackRollModifier = characterOne.weaponAttackRollModifier - 4;
+		}
+	}
+	if (weapon === 'barehands') {
+		characterOne.levelAttackRollModifier = characterOne.weaponAttackRollModifier
+		defaultDamage = 1;
+		characterOne.equippedWeapon = 'barehands';
+	}
+	closeForm();
+}
+	
+	
 //used for all ability modifiers
 const checkValidEntry = (ability) => {
 	for (i = 1; i <= 20; i++) {
@@ -633,6 +676,7 @@ const levelUp = () => {
 			document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints; 
 			if (characterOne.characterClass === 'fighter') {
 				characterOne.levelAttackRollModifier = characterOne.levelAttackRollModifier + 1
+				characterOne.WeaponAttackRollModifier = characterOne.levelAttackRollModifier;
 				characterOne.hitPoints = characterOne.hitPoints + 5;
 				document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints; 
 				console.log(`I AM A FIGHTER SO I GET MORE ATTACK AND MORE HP`);
@@ -640,6 +684,7 @@ const levelUp = () => {
 			else if (characterOne.characterClass === 'monk') {
 				if ((characterOne.level)%2 === 0 || (characterOne.level)%3 === 0) {
 					characterOne.levelAttackRollModifier = characterOne.levelAttackRollModifier + 1;
+					characterOne.WeaponAttackRollModifier = characterOne.levelAttackRollModifier;
 				}
 				characterOne.hitPoints = characterOne.hitPoints + 1;
 				document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints; 
@@ -649,10 +694,12 @@ const levelUp = () => {
 				characterOne.hitPoints = characterOne.hitPoints + 3;
 				document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints; 
 				characterOne.levelAttackRollModifier = characterOne.levelAttackRollModifier + 1
+				characterOne.WeaponAttackRollModifier = characterOne.levelAttackRollModifier;
 			}
 			
 			else if ((characterOne.level)%2 === 0) {
 				characterOne.levelAttackRollModifier = characterOne.levelAttackRollModifier + 1;
+				characterOne.WeaponAttackRollModifier = characterOne.levelAttackRollModifier;
 			}
 			if (characterOne.race === 'Dwarf' && (abilityModifier(characterOne.constitution,'characterOne.constitution') >=0)) {
 				characterOne.hitPoints = characterOne.hitPoints + abilityModifier(characterOne.constitution, 'characterOne.constitution');
@@ -680,7 +727,7 @@ const createRandomBadGuy = () => {
 	const arrayPosition = Math.floor(Math.random()*50);
 	randomBadGuy.name = arrayOfNames[arrayPosition];
 	randomBadGuy.armorClass = Math.floor(Math.random()*18 + 1);
-	randomBadGuy.hitPoints = Math.floor(Math.random()*9 + 1);
+	randomBadGuy.hitPoints = Math.floor(Math.random()*39 + 1);
 	const randomAlignment = Math.floor(Math.random()*3);
 	const randomRace = Math.floor(Math.random()*5);
 	switch(randomRace) {
@@ -966,6 +1013,10 @@ const attackPlayer = () => {
 								console.log('ROGUE CRITICAL');
 								}
 							}
+							if (characterOne.equippedWeapon === 'dagger') {
+								randomBadGuy.hitPoints = randomBadGuy.hitPoints - (.5 * damageDealt);
+								damageDealt = 1.5*damageDealt;
+							}
 							damageResult = `${damageDealt} dmg (it's a crit!)`;
 						}
 						//The enemy has died
@@ -1153,21 +1204,21 @@ const loadFunction = () => {
 	let savedCharacter = retrieveCharacter();
 	if (savedCharacter.Saved === 1) {
 		console.log('loading saved character');
-	characterOne = retrieveCharacter();
-	document.getElementById("characterSheet").innerHTML = characterOne.name + ' the ' + characterOne.race;
-	document.getElementById("armorClassBox").innerHTML = characterOne.armorClass;
-	document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints;
-	document.getElementById("alignmentBox").innerHTML = characterOne.alignment;
-	document.getElementById("strengthBox").innerHTML = characterOne.strength;
-	document.getElementById("dexterityBox").innerHTML = characterOne.dexterity;
-	document.getElementById("charismaBox").innerHTML = characterOne.charisma;
-	document.getElementById("constitutionBox").innerHTML = characterOne.constitution;
-	document.getElementById("wisdomBox").innerHTML = characterOne.wisdom;
-	document.getElementById("intelligenceBox").innerHTML = characterOne.intelligence;
-	document.getElementById("characterClassBox").innerHTML = characterOne.characterClass;
-	document.getElementById("levelCell").innerHTML = characterOne.level;
-	document.getElementById("experienceCell").innerHTML = characterOne.experience;
-	populateAbilityMods();
+		characterOne = retrieveCharacter();
+		document.getElementById("characterSheet").innerHTML = characterOne.name + ' the ' + characterOne.race;
+		document.getElementById("armorClassBox").innerHTML = characterOne.armorClass;
+		document.getElementById("hitPointsBox").innerHTML = characterOne.hitPoints;
+		document.getElementById("alignmentBox").innerHTML = characterOne.alignment;
+		document.getElementById("strengthBox").innerHTML = characterOne.strength;
+		document.getElementById("dexterityBox").innerHTML = characterOne.dexterity;
+		document.getElementById("charismaBox").innerHTML = characterOne.charisma;
+		document.getElementById("constitutionBox").innerHTML = characterOne.constitution;
+		document.getElementById("wisdomBox").innerHTML = characterOne.wisdom;
+		document.getElementById("intelligenceBox").innerHTML = characterOne.intelligence;
+		document.getElementById("characterClassBox").innerHTML = characterOne.characterClass;
+		document.getElementById("levelCell").innerHTML = characterOne.level;
+		document.getElementById("experienceCell").innerHTML = characterOne.experience;
+		populateAbilityMods();
 	}
 	if (characterOne.buttonDeleteCheck === 1) {
 		$( ".button" ).remove();
