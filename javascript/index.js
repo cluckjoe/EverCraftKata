@@ -486,6 +486,7 @@ const weaponSelection = (weapon) => {
 		console.log(characterOne.levelAttackRollModifier)
 		defaultDamage = 5;
 		characterOne.equippedWeapon = 'longsword';
+		console.log('damage should be 5 and above is the attackroll modifier');
 		}
 	}
 	if (weapon === 'dagger') {
@@ -514,6 +515,7 @@ const weaponSelection = (weapon) => {
 		defaultDamage = 1;
 		characterOne.equippedWeapon = 'barehands';
 		console.log(characterOne.levelAttackRollModifier)
+		console.log('damage should be 1 and above is the attackroll modifier');
 	}
 	closeForm();
 }
@@ -908,6 +910,7 @@ const attackPlayer = () => {
 					//after confirming they are alive proceed with rolling for attack
 				else {	
 					const rollResult = rollDamageDie(characterOne);
+					console.log(`roll result is ${rollResult}`)
 					if (characterOne.race === 'Dwarf' && randomBadGuy.race === 'Orc') {
 						rollResult[0] = rollResult[0] + characterOne.levelAttackRollModifier + 2;
 					}
